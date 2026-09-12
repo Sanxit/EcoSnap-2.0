@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/camera-32.png" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sangeeta Shrestha — Wedding &amp; Portrait Photographer | ECO SNAP</title>
+  <meta name="description"
+    content="Book Sangeeta Shrestha — a top-rated wedding and portrait photographer in Kathmandu. 4.9 stars, 127 reviews, 8+ years of experience. Starting from Rs. 50,000." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Remixicon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/photographer-profile.css" />
+</head>
+
+<body>
+
+  <!-- ============================
+         1. NAVBAR
+         ============================ -->
+  <nav class="navbar" id="navbar">
+    <div class="eco-container">
+      <a href="../index.html" class="navbar-brand">
+        <i class="ri-camera-lens-fill"></i>
+        ECO SNAP
+      </a>
+
+      <div class="navbar-links">
+        <a href="../index.html">Home</a>
+        <a href="photographers.html" class="active">Photographers</a>
+        <a href="packages.html">Packages</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="navbar-actions">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="register.html" class="btn-cta">Get Started</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="../index.html">Home</a>
+    <a href="photographers.html" class="active">Photographers</a>
+    <a href="packages.html">Packages</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="login.html" class="btn btn-outline" style="justify-content: center">Login</a>
+      <a href="register.html" class="btn btn-primary" style="justify-content: center">Get Started</a>
+    </div>
+  </div>
+
+  <!-- ============================
+         2. PROFILE HERO
+         ============================ -->
+  <section class="prof-hero" id="profHero">
+    <div class="prof-hero-cover" id="profHeroCover">
+      <div class="prof-hero-cover-overlay"></div>
+    </div>
+
+    <div class="eco-container">
+      <div class="prof-hero-breadcrumb">
+        <a href="../index.html">Home</a>
+        <i class="ri-arrow-right-s-line"></i>
+        <a href="photographers.html">Photographers</a>
+        <i class="ri-arrow-right-s-line"></i>
+        <span id="breadcrumbName">Sangeeta Shrestha</span>
+      </div>
+
+      <div class="prof-hero-card">
+        <div class="prof-hero-left">
+          <div class="prof-avatar-wrap">
+            <img class="prof-avatar" id="profAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Photographer avatar" />
+            <span class="prof-verified-dot" title="Verified Photographer">
+              <i class="ri-verified-badge-fill"></i>
+            </span>
+          </div>
+
+          <div class="prof-identity">
+            <div class="prof-name-row">
+              <h1 class="prof-name" id="profName">Sangeeta Shrestha</h1>
+              <span class="prof-badge-premium">
+                <i class="ri-award-fill"></i> Top Rated
+              </span>
+            </div>
+            <p class="prof-tagline" id="profTagline">Capturing life's most beautiful moments with artistic vision</p>
+            <div class="prof-meta-row">
+              <span class="prof-meta-item">
+                <i class="ri-map-pin-2-fill"></i>
+                <span id="profLocation">Kathmandu, Nepal</span>
+              </span>
+              <span class="prof-meta-item">
+                <i class="ri-time-line"></i>
+                <span id="profExp">8+ years experience</span>
+              </span>
+              <span class="prof-meta-item">
+                <i class="ri-camera-3-fill"></i>
+                <span id="profShootsCount">340+ shoots</span>
+              </span>
+            </div>
+            <div class="prof-tags" id="profTags">
+              <span>Wedding</span>
+              <span>Portrait</span>
+              <span>Corporate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prof-hero-right">
+          <div class="prof-rating-block">
+            <div class="prof-rating-stars" id="profStars">
+              <i class="ri-star-fill"></i>
+              <i class="ri-star-fill"></i>
+              <i class="ri-star-fill"></i>
+              <i class="ri-star-fill"></i>
+              <i class="ri-star-half-fill"></i>
+            </div>
+            <span class="prof-rating-value" id="profRating">4.9</span>
+            <span class="prof-rating-count">(<span id="profReviewCount">127</span> reviews)</span>
+          </div>
+
+          <div class="prof-price-block">
+            <span class="prof-price-label">Starting from</span>
+            <span class="prof-price-value" id="profPrice">Rs. 50,000</span>
+            <span class="prof-price-per">/ package</span>
+          </div>
+
+          <div class="prof-cta-btns">
+            <button class="btn-book-now" id="btnBookNow">
+              <i class="ri-calendar-check-fill"></i>
+              Book Now
+            </button>
+            <button class="btn-message" id="btnMessage">
+              <i class="ri-message-3-fill"></i>
+              Message
+            </button>
+            <button class="btn-save" id="btnSave" aria-label="Save photographer">
+              <i class="ri-heart-line"></i>
+            </button>
+          </div>
+
+          <p class="prof-response-time">
+            <i class="ri-flash-fill"></i>
+            Responds within <strong>2 hours</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         3. STICKY TAB BAR
+         ============================ -->
+  <div class="prof-tabs-bar" id="profTabsBar">
+    <div class="eco-container">
+      <nav class="prof-tabs" role="tablist">
+        <button class="prof-tab active" id="tabPortfolio" role="tab" aria-selected="true" data-target="secPortfolio">
+          <i class="ri-image-2-line"></i> Portfolio
+        </button>
+        <button class="prof-tab" id="tabPackages" role="tab" aria-selected="false" data-target="secPackages">
+          <i class="ri-price-tag-3-line"></i> Packages
+        </button>
+        <button class="prof-tab" id="tabAbout" role="tab" aria-selected="false" data-target="secAbout">
+          <i class="ri-user-line"></i> About
+        </button>
+        <button class="prof-tab" id="tabReviews" role="tab" aria-selected="false" data-target="secReviews">
+          <i class="ri-star-line"></i> Reviews
+        </button>
+        <button class="prof-tab" id="tabFAQ" role="tab" aria-selected="false" data-target="secFAQ">
+          <i class="ri-question-line"></i> FAQ
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ============================
+         4. MAIN CONTENT
+         ============================ -->
+  <div class="prof-content eco-container">
+
+    <!-- ========================
+           4.1 PORTFOLIO
+           ======================== -->
+    <section class="prof-section" id="secPortfolio">
+      <div class="prof-section-header">
+        <h2 class="prof-section-title">Portfolio</h2>
+        <div class="gallery-filters">
+          <button class="gf-btn active" data-filter="all">All</button>
+          <button class="gf-btn" data-filter="wedding">Wedding</button>
+          <button class="gf-btn" data-filter="portrait">Portrait</button>
+          <button class="gf-btn" data-filter="corporate">Corporate</button>
+        </div>
+      </div>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Gallery items injected by JS -->
+      </div>
+
+      <button class="btn-load-more" id="btnLoadMore">
+        <i class="ri-add-line"></i> Load more photos
+      </button>
+    </section>
+
+    <!-- ========================
+           4.2 PACKAGES
+           ======================== -->
+    <section class="prof-section" id="secPackages">
+      <div class="prof-section-header">
+        <h2 class="prof-section-title">Packages &amp; Pricing</h2>
+        <p class="prof-section-sub">All packages include digital delivery within 2 weeks. Custom packages available on
+          request.</p>
+      </div>
+
+      <div class="packages-grid">
+
+        <div class="pkg-card">
+          <div class="pkg-card-header">
+            <span class="pkg-icon"><i class="ri-seedling-line"></i></span>
+            <h3 class="pkg-name">Essential</h3>
+            <p class="pkg-tagline">Perfect for intimate events</p>
+          </div>
+          <div class="pkg-price">
+            <span class="pkg-price-amount">Rs. 50,000</span>
+            <span class="pkg-price-per">/ session</span>
+          </div>
+          <ul class="pkg-features">
+            <li><i class="ri-check-line"></i> 4 hours coverage</li>
+            <li><i class="ri-check-line"></i> 200+ edited photos</li>
+            <li><i class="ri-check-line"></i> Online gallery</li>
+            <li><i class="ri-check-line"></i> 1 photographer</li>
+            <li><i class="ri-check-line"></i> Print release</li>
+            <li class="pkg-feature-off"><i class="ri-close-line"></i> Second shooter</li>
+            <li class="pkg-feature-off"><i class="ri-close-line"></i> Engagement session</li>
+          </ul>
+          <button class="btn-select-pkg" id="btnSelectEssential">Select Package</button>
+        </div>
+
+        <div class="pkg-card pkg-card-popular">
+          <div class="pkg-popular-badge">Most Popular</div>
+          <div class="pkg-card-header">
+            <span class="pkg-icon"><i class="ri-star-smile-line"></i></span>
+            <h3 class="pkg-name">Premium</h3>
+            <p class="pkg-tagline">Our most-loved package</p>
+          </div>
+          <div class="pkg-price">
+            <span class="pkg-price-amount">Rs. 85,000</span>
+            <span class="pkg-price-per">/ session</span>
+          </div>
+          <ul class="pkg-features">
+            <li><i class="ri-check-line"></i> 8 hours coverage</li>
+            <li><i class="ri-check-line"></i> 500+ edited photos</li>
+            <li><i class="ri-check-line"></i> Online gallery</li>
+            <li><i class="ri-check-line"></i> 2 photographers</li>
+            <li><i class="ri-check-line"></i> Print release</li>
+            <li><i class="ri-check-line"></i> Second shooter</li>
+            <li class="pkg-feature-off"><i class="ri-close-line"></i> Engagement session</li>
+          </ul>
+          <button class="btn-select-pkg btn-select-pkg-primary" id="btnSelectPremium">Select Package</button>
+        </div>
+
+        <div class="pkg-card">
+          <div class="pkg-card-header">
+            <span class="pkg-icon"><i class="ri-vip-crown-2-line"></i></span>
+            <h3 class="pkg-name">Elite</h3>
+            <p class="pkg-tagline">The full luxury experience</p>
+          </div>
+          <div class="pkg-price">
+            <span class="pkg-price-amount">Rs. 1,40,000</span>
+            <span class="pkg-price-per">/ session</span>
+          </div>
+          <ul class="pkg-features">
+            <li><i class="ri-check-line"></i> Full-day coverage</li>
+            <li><i class="ri-check-line"></i> 800+ edited photos</li>
+            <li><i class="ri-check-line"></i> Online gallery</li>
+            <li><i class="ri-check-line"></i> 2 photographers</li>
+            <li><i class="ri-check-line"></i> Print release</li>
+            <li><i class="ri-check-line"></i> Second shooter</li>
+            <li><i class="ri-check-line"></i> Engagement session</li>
+          </ul>
+          <button class="btn-select-pkg" id="btnSelectElite">Select Package</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================
+           4.3 ABOUT
+           ======================== -->
+    <section class="prof-section" id="secAbout">
+      <div class="prof-section-header">
+        <h2 class="prof-section-title" id="aboutTitle">About the Photographer</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-left">
+          <div class="about-text" id="aboutBio">
+            <p>
+              Loading photographer details...
+            </p>
+          </div>
+
+          <div class="about-highlights">
+            <div class="about-highlight-item">
+              <i class="ri-award-line"></i>
+              <div>
+                <strong>2023 Best Photographer Award</strong>
+                <span>National Photography Association</span>
+              </div>
+            </div>
+            <div class="about-highlight-item">
+              <i class="ri-building-2-line"></i>
+              <div>
+                <strong>Featured in The Knot</strong>
+                <span>Spring 2022 Edition</span>
+              </div>
+            </div>
+            <div class="about-highlight-item">
+              <i class="ri-camera-lens-fill"></i>
+              <div>
+                <strong>Sony Global Associate</strong>
+                <span>Member since 2018</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-sidebar">
+          <div class="about-stat-card">
+            <div class="about-stat">
+              <span class="about-stat-num">340+</span>
+              <span class="about-stat-label">Shoots Completed</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">127</span>
+              <span class="about-stat-label">5-Star Reviews</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">8+</span>
+              <span class="about-stat-label">Years Experience</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">98%</span>
+              <span class="about-stat-label">Client Retention</span>
+            </div>
+          </div>
+
+          <div class="about-equipment">
+            <h4><i class="ri-camera-line"></i> Equipment</h4>
+            <ul>
+              <li>Sony A7 IV + A7R V</li>
+              <li>Sony 35mm f/1.4 GM</li>
+              <li>Sony 85mm f/1.4 GM</li>
+              <li>Sony 24-70mm f/2.8 GM II</li>
+              <li>Profoto B10 Plus</li>
+            </ul>
+          </div>
+
+          <div class="about-languages">
+            <h4><i class="ri-translate-2"></i> Languages</h4>
+            <div class="about-lang-tags">
+              <span>English</span>
+              <span>Spanish</span>
+            </div>
+          </div>
+
+          <div class="about-availability">
+            <h4><i class="ri-calendar-check-line"></i> Availability</h4>
+            <p>Generally available on weekends. Weekday bookings available with advance notice.</p>
+            <button class="btn-check-availability" id="btnCheckAvail">
+              <i class="ri-calendar-2-line"></i> Check Availability
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================
+           4.4 REVIEWS
+           ======================== -->
+    <section class="prof-section" id="secReviews">
+      <div class="prof-section-header">
+        <h2 class="prof-section-title">Client Reviews</h2>
+      </div>
+
+      <div class="reviews-summary">
+        <div class="reviews-score">
+          <span class="reviews-score-num">4.9</span>
+          <div class="reviews-score-stars">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-half-fill"></i>
+          </div>
+          <span class="reviews-score-count">127 reviews</span>
+        </div>
+
+        <div class="reviews-breakdown">
+          <div class="rb-row">
+            <span class="rb-label">5 stars</span>
+            <div class="rb-bar-wrap">
+              <div class="rb-bar" style="width: 88%"></div>
+            </div>
+            <span class="rb-pct">88%</span>
+          </div>
+          <div class="rb-row">
+            <span class="rb-label">4 stars</span>
+            <div class="rb-bar-wrap">
+              <div class="rb-bar rb-bar-4" style="width: 9%"></div>
+            </div>
+            <span class="rb-pct">9%</span>
+          </div>
+          <div class="rb-row">
+            <span class="rb-label">3 stars</span>
+            <div class="rb-bar-wrap">
+              <div class="rb-bar rb-bar-3" style="width: 2%"></div>
+            </div>
+            <span class="rb-pct">2%</span>
+          </div>
+          <div class="rb-row">
+            <span class="rb-label">2 stars</span>
+            <div class="rb-bar-wrap">
+              <div class="rb-bar rb-bar-2" style="width: 1%"></div>
+            </div>
+            <span class="rb-pct">1%</span>
+          </div>
+          <div class="rb-row">
+            <span class="rb-label">1 star</span>
+            <div class="rb-bar-wrap">
+              <div class="rb-bar rb-bar-1" style="width: 0%"></div>
+            </div>
+            <span class="rb-pct">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-list" id="reviewsList">
+        <!-- Reviews injected by JS -->
+      </div>
+
+      <button class="btn-load-more" id="btnLoadMoreReviews">
+        <i class="ri-add-line"></i> Load more reviews
+      </button>
+    </section>
+
+    <!-- ========================
+           4.5 FAQ
+           ======================== -->
+    <section class="prof-section" id="secFAQ">
+      <div class="prof-section-header">
+        <h2 class="prof-section-title">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How far in advance should I book?
+            <i class="ri-arrow-down-s-line faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            <p>I recommend booking at least 3-6 months in advance for weddings and special events, especially during
+              peak season (May-October). Portrait sessions can typically be scheduled with 1-2 weeks notice.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            Do you travel for shoots?
+            <i class="ri-arrow-down-s-line faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely! I'm based in San Francisco but regularly travel throughout the Bay Area and California.
+              Travel fees apply for locations more than 50 miles from my studio. I'm also available for destination
+              weddings worldwide.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            How long does photo delivery take?
+            <i class="ri-arrow-down-s-line faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            <p>For portrait sessions, you'll receive your gallery within 1 week. For weddings and larger events, please
+              allow up to 3-4 weeks. I'll send you a sneak peek of 10-15 images within 48 hours of your shoot!</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What if the weather is bad on my shoot day?
+            <i class="ri-arrow-down-s-line faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            <p>I have a flexible rescheduling policy for outdoor sessions affected by weather. I'll monitor the forecast
+              and reach out at least 48 hours before if we need to reschedule - at no extra charge.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            What payment methods do you accept?
+            <i class="ri-arrow-down-s-line faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            <p>I accept payments via eSewa, Khalti, and direct bank transfers. A 30% deposit is required to secure
+              your date, with the remainder due 7 days before the event.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+  <!-- /prof-content -->
+
+  <!-- ============================
+         5. BOOKING MODAL
+         ============================ -->
+  <div class="booking-overlay" id="bookingOverlay" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+    <div class="booking-modal" id="bookingModal">
+      <button class="booking-close" id="bookingClose" aria-label="Close booking modal">
+        <i class="ri-close-line"></i>
+      </button>
+
+      <div class="booking-modal-header">
+        <div class="booking-photographer-mini">
+          <img id="bookingAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Photographer" />
+          <div>
+            <strong id="bookingName">Sarah Jenkins</strong>
+            <span id="bookingTagline">Wedding &amp; Portrait Photographer</span>
+          </div>
+        </div>
+        <h2 class="booking-title" id="bookingTitle">Book a Session</h2>
+      </div>
+
+      <!-- Availability Check Form (shown only when opened via Check Availability) -->
+      <form class="booking-form" id="availabilityForm" novalidate hidden>
+        <div class="booking-form-grid avail-form-grid">
+          <div class="form-field">
+            <label for="availDate">Date *</label>
+            <input type="date" id="availDate" required />
+          </div>
+          <div class="form-field">
+            <label for="availTimeSlot">Time Slot *</label>
+            <select id="availTimeSlot" required>
+              <option value="MORNING">Morning</option>
+              <option value="AFTERNOON">Afternoon</option>
+              <option value="EVENING">Evening</option>
+              <option value="FULL_DAY">Full Day</option>
+            </select>
+          </div>
+        </div>
+        <!-- Inline result banner -->
+        <div class="avail-result" id="availResult" hidden></div>
+        <div class="booking-actions">
+          <button type="submit" class="btn-submit-booking" id="btnCheckAvailSubmit">
+            <i class="ri-calendar-check-line"></i> Check Availability
+          </button>
+        </div>
+      </form>
+
+      <form class="booking-form" id="bookingForm" novalidate>
+        <div class="booking-form-grid">
+          <div class="form-field">
+            <label for="bkgName">Your Full Name *</label>
+            <input type="text" id="bkgName" placeholder="Jane Doe" required />
+          </div>
+          <div class="form-field">
+            <label for="bkgEmail">Email Address *</label>
+            <input type="email" id="bkgEmail" placeholder="jane@email.com" required />
+          </div>
+          <div class="form-field">
+            <label for="bkgPhone">Phone Number</label>
+            <input type="tel" id="bkgPhone" placeholder="+977 9801234567" />
+          </div>
+          <div class="form-field">
+            <label for="bkgEventType">Event Type</label>
+            <select id="bkgEventType">
+              <option value="wedding">Wedding Photography</option>
+              <option value="portrait">Portrait Session</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="engagement">Engagement Shoot</option>
+              <option value="family">Family &amp; Maternity</option>
+              <option value="other">Other Occasion</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="bkgDate">Preferred Date *</label>
+            <input type="date" id="bkgDate" required />
+          </div>
+          <div class="form-field">
+            <label for="bkgTimeSlot">Time Slot</label>
+            <select id="bkgTimeSlot">
+              <option value="morning">Morning (9:00 AM – 12:00 PM)</option>
+              <option value="afternoon">Afternoon (1:00 PM – 4:00 PM)</option>
+              <option value="golden-hour" selected>Golden Hour (4:30 PM – 7:00 PM)</option>
+              <option value="full-day">Full Day Coverage</option>
+            </select>
+          </div>
+          <div class="form-field form-field-full">
+            <label for="bkgPackage">Package *</label>
+            <select id="bkgPackage" required>
+              <option value="">-- Select a package --</option>
+              <option value="essential">Essential -- Rs. 50,000</option>
+              <option value="premium">Premium -- Rs. 85,000</option>
+              <option value="elite">Elite -- Rs. 140,000</option>
+            </select>
+          </div>
+          <div class="form-field form-field-full">
+            <label for="bkgMessage">Notes &amp; Details</label>
+            <textarea id="bkgMessage" rows="4"
+              placeholder="Describe your event, location, style preferences, and any specific notes..."></textarea>
+          </div>
+        </div>
+
+        <div class="booking-actions">
+          <p class="booking-note">
+            <i class="ri-shield-check-line"></i>
+            No charge today - confirm details first.
+          </p>
+          <button type="submit" class="btn-submit-booking" id="btnSubmitBooking">
+            <i class="ri-send-plane-fill"></i> Send Booking Request
+          </button>
+        </div>
+      </form>
+
+      <!-- Success State -->
+      <div class="booking-success" id="bookingSuccess" hidden>
+        <div class="booking-success-icon">
+          <i class="ri-checkbox-circle-fill"></i>
+        </div>
+        <h3>Request Sent!</h3>
+        <p>Sarah will respond within 2 hours. Check your email for a confirmation.</p>
+        <button class="btn-close-success" id="btnCloseSuccess">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================
+         6. LIGHTBOX
+         ============================ -->
+  <div class="lightbox-overlay" id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Photo lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox"><i class="ri-close-line"></i></button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous photo"><i
+        class="ri-arrow-left-s-line"></i></button>
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-img" id="lightboxImg" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Gallery photo" />
+    </div>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Next photo"><i
+        class="ri-arrow-right-s-line"></i></button>
+    <div class="lightbox-counter" id="lightboxCounter">1 / 12</div>
+  </div>
+
+  <!-- ============================
+         7. FOOTER
+         ============================ -->
+  <footer class="footer">
+    <div class="eco-container footer-compact">
+      <div class="footer-left">
+        <a href="../index.html" class="footer-logo">
+          <i class="ri-camera-lens-fill"></i>
+          ECO SNAP
+        </a>
+        <span class="footer-copy">© 2026 ECO SNAP. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="photographers.html">Photographers</a>
+          <a href="packages.html">Packages</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <div class="footer-socials">
+          <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+          <a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+          <a href="#" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../assets/js/session.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/photographer-profile.js"></script>
+</body>
+
+</html>

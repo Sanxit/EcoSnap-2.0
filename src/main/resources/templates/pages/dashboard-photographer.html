@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/camera-32.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photographer Dashboard — ECO SNAP</title>
+  <meta name="description" content="Manage your photography portfolio, packages, availability, and bookings on ECO SNAP." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard-photographer.css" />
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<!-- ===== MODALS ===== -->
+<!-- Confirm Dialog -->
+<div class="modal-overlay" id="modalConfirm" onclick="if(event.target===this)closeModal('modalConfirm')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3 id="confirmTitle">Confirm Action</h3><button class="modal-close" onclick="closeModal('modalConfirm')">&times;</button></div>
+    <p class="confirm-msg" id="confirmMsg"></p>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalConfirm')">Cancel</button>
+      <button class="btn" id="confirmOkBtn" style="padding:8px 20px;border-radius:var(--radius-sm);background:#dc2626;color:#fff;border:none;cursor:pointer;font-weight:600;">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Portfolio Upload Modal -->
+<div class="modal-overlay" id="modalPortfolio" onclick="if(event.target===this)closeModal('modalPortfolio')">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-header"><h3 id="modalPortfolioTitle">Upload Image</h3><button class="modal-close" onclick="closeModal('modalPortfolio')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="pfId">
+      <div class="form-group"><label class="form-label">Image File (demo — file not stored)</label><input class="form-input" id="pfFile" type="file" accept="image/*"></div>
+      <div class="form-group"><label class="form-label">Caption *</label><input class="form-input" id="pfCaption" placeholder="Describe this photo..."></div>
+      <div class="form-group"><label class="form-label">Category</label>
+        <select class="form-input" id="pfCategory">
+          <option value="WEDDING">WEDDING</option>
+          <option value="EVENT">EVENT</option>
+          <option value="PORTRAIT">PORTRAIT</option>
+          <option value="PRODUCT">PRODUCT</option>
+          <option value="FASHION">FASHION</option>
+          <option value="WILDLIFE">WILDLIFE</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalPortfolio')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="savePortfolioItem()">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- Package Create/Edit Modal -->
+<div class="modal-overlay" id="modalPackage" onclick="if(event.target===this)closeModal('modalPackage')">
+  <div class="modal-box">
+    <div class="modal-header"><h3 id="modalPackageTitle">Add Package</h3><button class="modal-close" onclick="closeModal('modalPackage')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="pkgId">
+      <div class="form-group"><label class="form-label">Package Name *</label><input class="form-input" id="pkgName" placeholder="e.g. Premium Wedding Package"></div>
+      <div class="form-group"><label class="form-label">Category</label>
+        <select class="form-input" id="pkgCategory">
+          <option value="WEDDING">WEDDING</option>
+          <option value="EVENT">EVENT</option>
+          <option value="PORTRAIT">PORTRAIT</option>
+          <option value="PRODUCT">PRODUCT</option>
+          <option value="FASHION">FASHION</option>
+          <option value="WILDLIFE">WILDLIFE</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="pkgDesc" rows="3" style="resize:vertical;" placeholder="What is included in this package..."></textarea></div>
+      <div class="form-group"><label class="form-label">Price (Rs.) *</label><input class="form-input" id="pkgPrice" type="number" min="0"></div>
+      <div class="form-group"><label class="form-label">Duration (Hours) *</label><input class="form-input" id="pkgDuration" type="number" min="1"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalPackage')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="savePackage()">Save Package</button>
+    </div>
+  </div>
+</div>
+
+<!-- Availability Add Slot Modal -->
+<div class="modal-overlay" id="modalSlot" onclick="if(event.target===this)closeModal('modalSlot')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3>Add Availability Slot</h3><button class="modal-close" onclick="closeModal('modalSlot')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Date *</label><input class="form-input" id="slotDate" type="date"></div>
+      <div class="form-group"><label class="form-label">Time Slot</label>
+        <select class="form-input" id="slotTime">
+          <option value="MORNING">MORNING</option>
+          <option value="AFTERNOON">AFTERNOON</option>
+          <option value="EVENING">EVENING</option>
+          <option value="FULL_DAY">FULL_DAY</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalSlot')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveSlot()">Add Slot</button>
+    </div>
+  </div>
+</div>
+
+<!-- Decline Booking Modal -->
+<div class="modal-overlay" id="modalDecline" onclick="if(event.target===this)closeModal('modalDecline')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3>Decline Booking</h3><button class="modal-close" onclick="closeModal('modalDecline')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="declineId">
+      <div class="form-group"><label class="form-label">Reason for Declining *</label><textarea class="form-input" id="declineReason" rows="3" style="resize:vertical;" placeholder="Provide a reason for the client..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalDecline')">Cancel</button>
+      <button class="btn" style="padding:8px 20px;border-radius:var(--radius-sm);background:#dc2626;color:#fff;border:none;cursor:pointer;font-weight:600;" onclick="confirmDecline()">Decline Booking</button>
+    </div>
+  </div>
+</div>
+
+<!-- Caption Edit Modal -->
+<div class="modal-overlay" id="modalCaption" onclick="if(event.target===this)closeModal('modalCaption')">
+  <div class="modal-box" style="max-width:380px;">
+    <div class="modal-header"><h3>Edit Caption</h3><button class="modal-close" onclick="closeModal('modalCaption')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="captionId">
+      <div class="form-group"><label class="form-label">Caption</label><input class="form-input" id="captionText"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalCaption')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveCaption()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="dash-layout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <a href="../index.html" class="sidebar-brand">
+      <i class="ri-camera-lens-fill"></i> ECO SNAP
+    </a>
+    <div class="sidebar-role">
+      <span class="role-badge photographer"><i class="ri-camera-2-line"></i> Photographer</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item active" href="#home" id="nav-home" onclick="showSection('home',this)">
+        <i class="ri-home-4-line"></i> Home
+      </a>
+
+      <div class="nav-section-label">Profile</div>
+      <a class="nav-item" href="#profile" id="nav-profile" onclick="showSection('profile',this)">
+        <i class="ri-user-settings-line"></i> My Profile
+      </a>
+
+      <div class="nav-section-label">Work</div>
+      <a class="nav-item" href="#portfolio" id="nav-portfolio" onclick="showSection('portfolio',this)">
+        <i class="ri-image-2-line"></i> Portfolio
+      </a>
+      <a class="nav-item" href="#packages" id="nav-packages" onclick="showSection('packages',this)">
+        <i class="ri-price-tag-3-line"></i> Packages
+      </a>
+      <a class="nav-item" href="#availability" id="nav-availability" onclick="showSection('availability',this)">
+        <i class="ri-calendar-2-line"></i> Availability
+      </a>
+      <a class="nav-item" href="#requests" id="nav-requests" onclick="showSection('requests',this)">
+        <i class="ri-calendar-check-line"></i> Booking Requests
+        <span id="pendingBadge" style="margin-left:auto;background:var(--primary-color);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;"></span>
+      </a>
+      <a class="nav-item" href="#reviews" id="nav-reviews" onclick="showSection('reviews',this)">
+        <i class="ri-star-line"></i> Reviews
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#notifications" id="nav-notifications" onclick="showSection('notifications',this)">
+        <i class="ri-notification-3-line"></i> Notifications
+        <span id="notifBadge" style="margin-left:auto;background:var(--primary-color);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;"></span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebarAvatar">SS</div>
+        <div class="sidebar-user-info">
+          <div class="user-name" id="sidebarName">Sangeeta Shrestha</div>
+          <div class="user-email" id="sidebarEmail">photo@ecosnap.com</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="EcoSnapSession.logout()">
+        <i class="ri-logout-box-r-line"></i> Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+        <div>
+          <h2 id="topbarTitle">Home</h2>
+          <p id="topbarSub">Good morning, Sangeeta</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn" onclick="showSection('notifications',null)">
+          <i class="ri-notification-3-line"></i>
+          <span class="notif-dot" id="topbarNotifDot"></span>
+        </button>
+        <div class="topbar-avatar" id="topbarAvatar">SS</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- ======= SECTION: HOME ======= -->
+      <section id="section-home">
+        <div class="page-header">
+          <h1>Photographer Dashboard</h1>
+          <p>Your performance summary — Bhadra 2082</p>
+        </div>
+        <div class="stats-grid" id="homeStats"></div>
+        <div id="nextJobBanner"></div>
+
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Upcoming Jobs</h3>
+              <a class="card-action" href="#requests" onclick="showSection('requests',null)">All &rarr;</a>
+            </div>
+            <div id="homeUpcomingJobs"></div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Latest Reviews</h3>
+              <a class="card-action" href="#reviews" onclick="showSection('reviews',null)">All reviews &rarr;</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="homeLatestReviews"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: MY PROFILE ======= -->
+      <section id="section-profile" style="display:none;">
+        <div class="page-header">
+          <h2>My Profile</h2>
+          <p>Manage your public photographer profile</p>
+        </div>
+        <div class="dash-card" style="max-width:580px;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:28px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--primary-color);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;" id="profileInitials">SS</div>
+            <div>
+              <div style="font-weight:700;font-size:1.1rem;" id="profileName">Sangeeta Shrestha</div>
+              <div style="font-size:.85rem;color:var(--gray-500);">Wedding &amp; Portrait Photographer · Kathmandu</div>
+              <div style="margin-top:6px;"><span class="status-badge active">Verified</span> <span style="font-size:.78rem;color:#f59e0b;">★ 4.9 Rating</span></div>
+            </div>
+          </div>
+          <div style="display:grid;gap:16px;">
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" value="Sangeeta Shrestha"></div>
+            <div class="form-group"><label class="form-label">Bio</label><textarea rows="3" class="form-input" style="resize:vertical;">Award-winning wedding and events photographer based in Kathmandu, Nepal. Specializing in candid, documentary-style coverage that captures the essence of your special moments. 10+ years of experience.</textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group"><label class="form-label">Specialization</label><input type="text" class="form-input" value="WEDDING, PORTRAIT, CORPORATE"></div>
+              <div class="form-group"><label class="form-label">Experience (Years)</label><input type="number" class="form-input" value="10"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group"><label class="form-label">Base Rate (Rs./hr)</label><input type="number" class="form-input" value="5000"></div>
+              <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" value="Kathmandu, Nepal"></div>
+            </div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="showToast('Profile saved successfully.','success')">Save Changes</button>
+          </div>
+        </div>
+        <div class="dash-card" style="max-width:580px;">
+          <div class="dash-card-header"><h3>Change Password</h3></div>
+          <div style="display:grid;gap:16px;">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" id="profPwdCur"></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" id="profPwdNew"></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" class="form-input" id="profPwdCf"></div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="changePassword()">Update Password</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: PORTFOLIO ======= -->
+      <section id="section-portfolio" style="display:none;">
+        <div class="page-header">
+          <h2>My Portfolio</h2>
+          <p>Manage the work shown to potential clients</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Portfolio Images</h3>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;border-radius:var(--radius-sm);" onclick="openUploadModal()">
+              <i class="ri-upload-2-line"></i> Upload Image
+            </button>
+          </div>
+          <div class="portfolio-grid" id="portfolioGrid"></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: PACKAGES ======= -->
+      <section id="section-packages" style="display:none;">
+        <div class="page-header">
+          <h2>My Packages</h2>
+          <p>Define and manage your photography service packages</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Packages</h3>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;border-radius:var(--radius-sm);" onclick="openNewPackage()">
+              <i class="ri-add-line"></i> Add Package
+            </button>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="packagesTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: AVAILABILITY ======= -->
+      <section id="section-availability" style="display:none;">
+        <div class="page-header">
+          <h2>Availability</h2>
+          <p>Manage your schedule and available slots</p>
+        </div>
+        <div class="dash-card" style="margin-bottom:20px;">
+          <div class="dash-card-header">
+            <h3>Available Slots</h3>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;border-radius:var(--radius-sm);" onclick="openSlotModal()">
+              <i class="ri-add-line"></i> Add Slot
+            </button>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="slotsTable"></table></div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Calendar View — Bhadra 2082</h3>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;" id="calendarDayHeaders"></div>
+          <div id="calendarGrid" class="availability-grid"></div>
+          <div class="avail-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#dcfce7;border:1px solid #16a34a;"></div>Available</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#fee2e2;border:1px solid #dc2626;"></div>Booked</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#fef9c3;border:1px solid #ca8a04;"></div>Partial</div>
+            <div class="legend-item"><div class="legend-dot" style="background:var(--gray-100);"></div>Past</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: BOOKING REQUESTS ======= -->
+      <section id="section-requests" style="display:none;">
+        <div class="page-header">
+          <h2>Booking Requests</h2>
+          <p>Accept, decline, or complete your photography bookings</p>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);" id="requestStats"></div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>Booking Log</h3></div>
+          <div class="tab-bar" id="requestTabs"></div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="requestsTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: REVIEWS ======= -->
+      <section id="section-reviews" style="display:none;">
+        <div class="page-header">
+          <h2>Reviews</h2>
+          <p>What your clients are saying</p>
+        </div>
+        <div class="dash-card" style="margin-bottom:20px;" id="reviewSummaryCard"></div>
+        <div style="display:flex;flex-direction:column;gap:14px;" id="reviewsList"></div>
+      </section>
+
+      <!-- ======= SECTION: NOTIFICATIONS ======= -->
+      <section id="section-notifications" style="display:none;">
+        <div class="page-header">
+          <h2>Notifications</h2>
+          <p>Booking alerts and platform updates</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Notifications</h3>
+            <button class="btn-xs edit" style="padding:6px 12px;font-size:.8rem;" onclick="markAllRead()">Mark All Read</button>
+          </div>
+          <div id="notificationsList"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- JavaScript -->
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/dashboard-photographer.js"></script>
+</body>
+</html>

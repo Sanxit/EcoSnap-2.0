@@ -1,10 +1,869 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Index Page</title>
+  <meta charset="UTF-8" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/camera-32.png" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECO SNAP - Professional Event Photography Marketplace</title>
+  <meta name="description"
+    content="Discover and book top-tier professional photographers for weddings, corporate events, portraits and more. ECO SNAP connects you with verified photography experts." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Remixicon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/home.css" />
 </head>
+
 <body>
-<h1>This is index page.</h1>
+  <!-- ============================
+         1. NAVBAR
+         ============================ -->
+  <nav class="navbar" id="navbar">
+    <div class="eco-container">
+      <a href="index.html" class="navbar-brand">
+        <i class="ri-camera-lens-fill"></i>
+        ECO SNAP
+      </a>
+
+      <div class="navbar-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="pages/photographers.html">Photographers</a>
+        <a href="pages/packages.html">Packages</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/contact.html">Contact</a>
+      </div>
+
+      <div class="navbar-actions">
+        <a href="pages/login.html" class="btn-login">Login</a>
+        <a href="pages/register.html" class="btn-cta">Get Started</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html" class="active">Home</a>
+    <a href="pages/photographers.html">Photographers</a>
+    <a href="pages/packages.html">Packages</a>
+    <a href="pages/about.html">About</a>
+    <a href="pages/contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="pages/login.html" class="btn btn-outline" style="justify-content: center">Login</a>
+      <a href="pages/register.html" class="btn btn-primary" style="justify-content: center">Get Started</a>
+    </div>
+  </div>
+
+  <!-- ============================
+         2. HERO SECTION
+         ============================ -->
+  <section class="hero">
+    <div class="eco-container">
+      <div class="hero-content">
+        <div class="hero-left reveal-left">
+          <h1>
+            ECO SNAP <br /><span>PHOTOGRAPHY</span>
+          </h1>
+          <p>
+            Discover and book top-tier photographers for weddings, corporate
+            events, and portraits. High-fidelity memories captured by vetted
+            experts, delivered with premium quality.
+          </p>
+          <div class="hero-buttons">
+            <a href="#photographers" class="btn btn-primary">
+              EXPLORE PAGES <i class="ri-arrow-right-up-line"></i>
+            </a>
+            <a href="pages/contact.html" class="btn btn-outline">
+              CONTACT US <i class="ri-arrow-right-up-line"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-right reveal-right">
+          <img src="./assets/img/homecamera.png" alt="Professional Camera" />
+
+          <!-- Floating Rating Card -->
+          <div class="hero-float-card card-rating">
+            <div class="icon-wrap">
+              <i class="ri-star-fill"></i>
+            </div>
+            <div>
+              <div class="rating-value">4.9</div>
+              <div class="rating-label">Over 2k Reviews</div>
+            </div>
+          </div>
+
+          <!-- Floating Package Card -->
+          <div class="hero-float-card card-package">
+            <div>
+              <div class="package-label">Starter Package</div>
+              <div class="package-price">Rs.14,999</div>
+            </div>
+            <div class="arrow-icon">
+              <i class="ri-arrow-right-line"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         3. SEARCH CARD (Overlapping)
+         ============================ -->
+  <div class="search-section">
+    <div class="eco-container">
+      <div class="search-card reveal">
+        <div class="search-form">
+          <!-- Photography Type -->
+          <div class="search-field">
+            <label for="searchSpecialty">Photography Type</label>
+            <div class="search-input-wrap">
+              <i class="ri-camera-line"></i>
+              <select id="searchSpecialty">
+                <option value="">All Types</option>
+                <option value="wedding">Wedding</option>
+                <option value="corporate">Corporate</option>
+                <option value="portrait">Portrait</option>
+                <option value="family">Family</option>
+                <option value="birthday">Birthday</option>
+                <option value="graduation">Graduation</option>
+                <option value="engagement">Engagement</option>
+                <option value="architecture">Architecture</option>
+                <option value="product">Product</option>
+              </select>
+              <i class="ri-arrow-down-s-line chevron"></i>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="search-field">
+            <label for="searchLocation">Location</label>
+            <div class="search-input-wrap">
+              <i class="ri-map-pin-line"></i>
+              <select id="searchLocation">
+                <option value="">All Cities</option>
+                <option value="kathmandu">Kathmandu</option>
+                <option value="lalitpur">Lalitpur</option>
+                <option value="bhaktapur">Bhaktapur</option>
+                <option value="pokhara">Pokhara</option>
+                <option value="chitwan">Chitwan</option>
+                <option value="other">Other Cities</option>
+              </select>
+              <i class="ri-arrow-down-s-line chevron"></i>
+            </div>
+          </div>
+
+          <!-- Event Date -->
+          <div class="search-field">
+            <label for="searchDate">Event Date</label>
+            <div class="search-input-wrap">
+              <i class="ri-calendar-line"></i>
+              <input type="date" id="searchDate" />
+            </div>
+          </div>
+
+          <!-- Budget -->
+          <div class="search-field">
+            <label for="searchBudget">Budget (NPR)</label>
+            <div class="search-input-wrap">
+              <i class="ri-coins-line"></i>
+              <select id="searchBudget">
+                <option value="">Any Budget</option>
+                <option value="20000">Up to Rs. 20,000</option>
+                <option value="35000">Up to Rs. 35,000</option>
+                <option value="50000">Up to Rs. 50,000</option>
+                <option value="60000">Rs. 60,000+</option>
+              </select>
+              <i class="ri-arrow-down-s-line chevron"></i>
+            </div>
+          </div>
+
+          <!-- Search Button -->
+          <div class="search-field">
+            <button class="btn-search" id="btnHeroSearch">
+              <i class="ri-search-line"></i>
+              Find Photographers
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================
+         4. HOW IT WORKS
+         ============================ -->
+  <section class="how-it-works" id="about">
+    <div class="eco-container">
+      <div class="section-header reveal">
+        <div class="section-label">Process</div>
+        <h2 class="section-title">How ECO SNAP Works</h2>
+        <p class="section-subtitle">
+          Simple steps to finding the perfect photographer for your next big
+          moment.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-item reveal">
+          <div class="step-icon">
+            <i class="ri-user-search-line"></i>
+          </div>
+          <h3>Browse Photographers</h3>
+          <p>Explore portfolios and find the style that fits your vision.</p>
+        </div>
+
+        <div class="step-item reveal" style="transition-delay: 0.1s">
+          <div class="step-icon">
+            <i class="ri-equalizer-line"></i>
+          </div>
+          <h3>Compare Packages</h3>
+          <p>
+            Review pricing and select the perfect package for your needs.
+          </p>
+        </div>
+
+        <div class="step-item reveal" style="transition-delay: 0.2s">
+          <div class="step-icon">
+            <i class="ri-calendar-check-line"></i>
+          </div>
+          <h3>Book Online</h3>
+          <p>
+            Secure your date instantly with our easy booking system.
+          </p>
+        </div>
+
+        <div class="step-item reveal" style="transition-delay: 0.3s">
+          <div class="step-icon">
+            <i class="ri-camera-3-line"></i>
+          </div>
+          <h3>Capture Your Event</h3>
+          <p>
+            Enjoy your day while a professional captures every memory.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         5. FEATURED PHOTOGRAPHERS
+         ============================ -->
+  <section class="featured-photographers" id="photographers">
+    <div class="eco-container">
+      <div class="section-header-row reveal">
+        <div>
+          <div class="section-label">Our Team</div>
+          <h2 class="section-title">Featured Photographers</h2>
+          <p class="section-subtitle">
+            Top-rated professionals ready to capture your moments.
+          </p>
+        </div>
+        <a href="pages/photographers.html" class="view-all">
+          View All <i class="ri-arrow-right-line"></i>
+        </a>
+      </div>
+
+      <div class="photographers-grid">
+        <!-- Card 1 -->
+        <div class="photographer-card reveal">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWb1HFQ4gye_KvOSEQv17jMl-pl1VRCe8ZF0WG-wI-Gw9uDQ7Gv3LzW8mmy3_ygaRzIJiT-I9e72DoRHPFrd85d0rDQNxNr0A6KsdhfmucvFrDW1bEwkpBUUEmJTxzlohZGgqILKpsBCmZ0jyVLKDyGyi9beJsjkeHJX8ztkhxrLzYEAbxuuU4SkC9MQjtPC8ng2mvzaJ9yAr3npDVf_slwndjQtyS9OJhOo1_R8wyvLjGd3nJUOTULQ"
+              alt="Sangeeta Shrestha Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 5.0
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2bc2baAJ2uWyZegNUVVFOvXcG5pj44gXOBW9P99m4fLZv8MyeN3Jjj6AL8yOvgrOa3jvI1-13WFafcE8PzBIXDqfuh22kv2_zDW6o77ylzEkodAqBlArLmGFpufEIUu1o6-iks6J6nmiyEntkeYGYDbp8KgY7nE1Chng-WnyQ0niMyq1mjQR-iP2F5gm0w9x4P6jdjmcwInVyiI-mhsYab7ujzC5CDyabi_lwJ6HRuVPZ8NJ8dNWk5w"
+              alt="Sangeeta Shrestha" />
+            <div class="card-info">
+              <h3 class="card-name">Sangeeta Shrestha</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Kathmandu
+              </p>
+              <div class="card-tags">
+                <span>Wedding</span>
+                <span>Portrait</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=1'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="photographer-card reveal" style="transition-delay: 0.1s">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLtjwkITVVShLLquHGczx27Fb6lnVelsacdG5i1xmjjF_ijfeSoaKmNY7anI9TyzkQQJIxqEYtnHlhKJjXwiMM0w1EOm7VjbQAZ2qioVnuzHpnkMlg69xUen5GHqhcydRvvdIawuW7LLfk97objy2Gtb82Fg1F92J9vtnPOEcY75un5EI5bVXNd_sFoCtWPtFUld9p0vLNLgELOTLfx4JpUYtaES8AquGhrdaedYTqe22AX56FZ5ROvg"
+              alt="Roshan Maharjan Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 4.9
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrZRQsS02C_hw5LNetKNJvFtsLk4j4Y7YKFdaDDS7Ou9lVrDx0kzUPXOoTYoXx1PVauObxK5SHwTbSD9XbfoNg6zBghRzBMRQEWILqDIUsqXW7LM5IJCbaX-xBC1jDXVDonWtR9lKg5XwvDfYy1rQYq9IYYLEb2vW7W-dJS8PF4IUgvj4ybyQAWMH8JTWkrPS1bv1YjTp8DKt21uNXfy1i9MfeoU13Si_AbOuWwk--uAe0LoHR8aEM2g"
+              alt="Roshan Maharjan" />
+            <div class="card-info">
+              <h3 class="card-name">Roshan Maharjan</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Lalitpur
+              </p>
+              <div class="card-tags">
+                <span>Corporate</span>
+                <span>Product</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=2'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="photographer-card reveal" style="transition-delay: 0.2s">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXRmI5UgMzQ2qmvBW2WtXqpH_GPGuoCUHAHYT-pGxRdQWKnqgbUg8nnII2ZakVSwR3Zk_0M2VodgiwZlYuQPgF8KAfMhI1uC92HCNRsDLvW1GRYvgFNt_nvKGlEwtqtz6UOgDJi8uD26indgvzk4EdpPzoCu3ZDbaR340VEhf8oBlMhdztqocWc3eutVm1WZonzk4vUKWLOoOdChAgqOXtwMietssCykkPx1AUllfMlCg7ID68P1jIBg"
+              alt="Anjali Gurung Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 4.8
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi6FhEr8_k-PTk943x16LIMKpbOCEWsycj-sLdfjSJiqanWyJ1vKGwmgTU2bfkCauIHe2HL3tL0oO0BWOuQebeG7g1Mz-vZfbj0Z6YFOv3YTBlKRPXu9YmYpzWh2VJE4rj7rkfs_JiVq5suuii32aXhWmFWIEWCfjF0Ch-iMqq3xudQv7H--ATQwcTYnhR71jcsFY5ngHYchwaXyw96LADrk6JfI4HCfTy1C3NUq4hNiYU6LdshjJ_w"
+              alt="Anjali Gurung" />
+            <div class="card-info">
+              <h3 class="card-name">Anjali Gurung</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Pokhara
+              </p>
+              <div class="card-tags">
+                <span>Family</span>
+                <span>Birthday</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=3'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="photographer-card reveal">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUgRQFXyY3teHI5iFwR1eMfMl1fveUDVWNslurAwd2FnncwOBcJPemPr7C5BhSMm3n2BUu7Vp-9VxV92kdgU0gFlWibj5Qrddjth-PAXek2bPOCoJ-mKKXa-hwqs2t4Wh_WVKWOkB-CDS3s1ydn59yBVCGgpOzwax6EailPkWctfdNrjPi33BC3KzPcMv3evFeGirAqAArnkJtLoV84H2xl6Nz7Qqa5_t__IY-FaYqlT9H8tvUx06tDA"
+              alt="Manish Khadka Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 4.9
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ZFTSx01EgmhMwYkQmKpbbkBDZUuYevRYDcust10w2brGV-CVT5kLjTVqPkNVUOozhsKFqtNgEBlQoSsEzftMeDjqoZIHSIrw5GH8RKMMtXigOvlzPW2tnNifP2HzMn-0Id_FgX6GaVIn3ARnQdDSHliVVaESs20BiuTpxLZHyrQbjylNnE-tdk5feXrjhozpDYKwrZcHhhXBpUj6efbAzycoKnrYK4IjG0YH4RcKiMXX0-pj-lmvrw"
+              alt="Manish Khadka" />
+            <div class="card-info">
+              <h3 class="card-name">Manish Khadka</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Bhaktapur
+              </p>
+              <div class="card-tags">
+                <span>Architecture</span>
+                <span>Corporate</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=4'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="photographer-card reveal" style="transition-delay: 0.1s">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd1iMeOojgKTLYtWTLWhS3dP2R1bQDMVdIXy8QVtuyV_nKwlEV1ePS4Xp86Vu5S0VJRkK9VRMK6A5vZbakIWLCkiV3_OlhuQCfpT7ABQFAMek1PoEFu81F9zkiXuQp26OUzX4DvKIB4fKpMPd0lNBtNxesRySw52jR4Qr7menbXOJ-nupzMohi1HSE2_w4UbSkeZeJD4Tlw3a5rlFj18VW8W0t1zvZa5xigDPeTgsA5GB53LtVHPLSNQ"
+              alt="Alisha Shrestha Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 5.0
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcc6TJzWLDOLtLf9Zo2uDTtUuWt8NszUc8AWUvKyDGpDWLaKQuqBwXTmJ9JvuuABvQos1Vtp1iTjC34DWOUYAZKIYhUdPZEU7hW-TQrF20T9HIrbYgBWcrCOHGk_pb4PKHp24khKcrr63kVN6pBEBt3hYFxZEB0wLNQVTOKsZxop1mLjZKL1GGlvMftXGyBBcZZgSSQA6EHWM9d4MDPNRqMq5uffh6m8Jxq5eXPU0KUzDRx585aMXbwQ"
+              alt="Alisha Shrestha" />
+            <div class="card-info">
+              <h3 class="card-name">Alisha Shrestha</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Chitwan
+              </p>
+              <div class="card-tags">
+                <span>Wedding</span>
+                <span>Engagement</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=5'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="photographer-card reveal" style="transition-delay: 0.2s">
+          <div class="card-cover">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkDYIXtqRlwcOpYk1oFxM2q2Kz14E_rXpr9GkubN3afGCnTXYFntodJFlRuWxJZ80YWfOhd4eqhjsUKx2A_ybaZbmD07145lU360aWglqfws_3RQ7PekTFY8Tm2jjVFMTrslM9E57KbNQDQLzmWUmjVGg06nbHR8RnAbrz5uvGe5BBk6U5pT-liQQ48hBbbKUeyTDnwS8wiiPMfJ83TXnR_OvFBoJ2bhvgJWQMO3OKfRRAGagAiBm15g"
+              alt="Sameer Bajracharya Portfolio" />
+            <div class="card-rating">
+              <i class="ri-star-fill"></i> 4.7
+            </div>
+          </div>
+          <div class="card-body">
+            <img class="card-avatar"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYfUIrM-nMMjDR-eNrjjG1hvZHUJfupMiqd1wudX_m54M6dICUxKA8RYVVfx7mXNg2d4gptiWWTGQpczIrCJiU9jk4C7qKhTqwG6912qpDgy9bHDKECYqZW12sdEECGQGKSJmLmmUPHHpJPKAdEiq6T8s2CrRjR8kFMm1B5t34RLiLnyteRJGXen_Z_Nd-y_wm8QJ6FucJ148s7N6VXuLXMDbMTf1_J4ZijsdW7sPBybvAcVWZJO__ZA"
+              alt="Sameer Bajracharya" />
+            <div class="card-info">
+              <h3 class="card-name">Sameer Bajracharya</h3>
+              <p class="card-location">
+                <i class="ri-map-pin-2-fill"></i> Dharan
+              </p>
+              <div class="card-tags">
+                <span>Graduation</span>
+                <span>Portrait</span>
+              </div>
+              <button class="btn-profile" onclick="window.location.href='pages/photographer-profile.html?id=6'">View
+                Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         6. PHOTOGRAPHY CATEGORIES
+         ============================ -->
+  <section class="categories-section">
+    <div class="eco-container">
+      <div class="section-header reveal">
+        <div class="section-label">Categories</div>
+        <h2 class="section-title">Photography Categories</h2>
+        <p class="section-subtitle">
+          Find experts specializing in the exact type of photography you need.
+        </p>
+      </div>
+
+      <div class="categories-grid">
+        <a href="pages/photographers.html?specialty=wedding" class="category-card reveal">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE70aL1E4i0V71dnnUpTjMrzeCl3CqrjTOBToicSxL-2EI2Nh_nXaCPB8tvTzw76fzqyAKdY7ru7-hpHcNFDDzv0qbb_UpyR4y2ZQFxP0detQX-map8iMHD7_engqpAX8KargH8f15oFSMw3KyZjxz04fJD18TTO_BB5R5CYqmH_gBlYoNRwofwr1T6WGip5YU8vRWwfbzbTC3kvS_TbaKUoGeiTl4Nj9zK6bH_L7acWpJFjn5LJrwUA"
+            alt="Wedding Photography" />
+          <div class="category-overlay">
+            <h3>Wedding</h3>
+          </div>
+        </a>
+
+        <a href="pages/photographers.html?specialty=birthday" class="category-card reveal"
+          style="transition-delay: 0.1s">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMrWuiE-qrOGoXqLWrnjoK0hfimOMFY32g4Co1Xe_6Ss2PfweWZ39Y9CAV-dblP5IE3IBByVy3M0lD6kLzb-YPs9s25-ZuM8RqSnN4fbrdHf7tZ04lpjviwglz9B1wJmeSjRxlIqSNzsaiSQ1L0xK4PmSJ9d89CgBtyBBwI6ia6K5IVf6MfCklnbO2EPXRObejeqXzUNE5jnWKvq1B21escM1sxY8M7A1EXpPzqwb9yW5NqfehitQc9w"
+            alt="Birthday Photography" />
+          <div class="category-overlay">
+            <h3>Birthday</h3>
+          </div>
+        </a>
+
+        <a href="pages/photographers.html?specialty=corporate" class="category-card reveal"
+          style="transition-delay: 0.2s">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqL8gnFyRzPLPMImjk5pjFFilazgF2MvZiyTqvMb6ZGimmEQLuxCohfr7haEk5CrmHV4-jjAc5o-0zpp7pqt1nxq88CwjSdWztsbNL1FpeX-UM1VRyUf3h_hnuUN3bkNj-1s1SUtPwn37_IQXZBI3TQaecrpcp-ExgPSDZ9hco27LkXL1OGgNYk7Pw9MRVxfYlbdT1ObwC4o9aOCtO7DJ5AAb30PQS6gy0Qc2fCJARyy6nJsz3FqgVkA"
+            alt="Corporate Event Photography" />
+          <div class="category-overlay">
+            <h3>Corporate Event</h3>
+          </div>
+        </a>
+
+        <a href="pages/photographers.html?specialty=graduation" class="category-card reveal">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuATyJsEquLjgPuUmBqIAJMWgBwujcRt3eJA1q2YaHHZ2Ch5WAEAPdfaYIcWvtUSqr8Or_03CzavKFTIZqczHYBa1Wp0xCbOEn-gm27ttJ3Ej28CvYQmCPcHsDCpcAv1NdZ4tJ1M98YeCT-kyMknTw5v3O8rUeBWxvkyTFPOSL78lZWNMtiS8VmAlddgZq2HeoqTCAfMBFCrcx_mdmjr2YtP3zNcsNkdnU6zMgQku1cz1lWqltmcOIkfZg"
+            alt="Graduation Photography" />
+          <div class="category-overlay">
+            <h3>Graduation</h3>
+          </div>
+        </a>
+
+        <a href="pages/photographers.html?specialty=portrait" class="category-card reveal"
+          style="transition-delay: 0.1s">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0eYX-BhmTvsYX763MErfZot4Z8oOi6n_hRaesrrGWQclwpbbx2Qkh2WPo-6GKbw7dkT4gpzz50jwExT6jyuPFsVt5LeZcM3u3TE1E5Gk-qtDX5qMTuuctAofZo6X0Fj9mg8wUPSvCo9xwS1SG3N2XXqwB5lYRMdbuNJH98k5scuY0GieZYXcGDjmNMEjcgMOJmUh1m8dlM-tbAzDpYehhEQun8hXQZMWTdqCc8Dcy_NfH-RbVzxqx6g"
+            alt="Portrait Photography" />
+          <div class="category-overlay">
+            <h3>Portrait</h3>
+          </div>
+        </a>
+
+        <a href="pages/photographers.html?specialty=product" class="category-card reveal"
+          style="transition-delay: 0.2s">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNoluLq6Oevfz_IOIE8D53OcFNNccGCQ6IlaBTDAWFjde6shEPnYAsWom2FiX7mYwkoROn5u62woxcQsePXkrIwFHlPTTv6G5u2hXf4gmoCKEWXBGka_x_-PHcHWgPhQbg5v7Lz4OVzBn9fY-jBIAEIaRYKJWXU61VOvdJbj1lYLnVN2c2mO5AntMyg79kQjSExgCTou48s5YWLZZVbE68E8Zy_NqyZx2r78sHpDJPnPd6EtKr82wdCg"
+            alt="Product Photography" />
+          <div class="category-overlay">
+            <h3>Product Photography</h3>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         7. WHY CHOOSE ECOSNAP
+         ============================ -->
+  <section class="why-choose">
+    <div class="eco-container">
+      <div class="section-header reveal">
+        <div class="section-label">Why Us</div>
+        <h2 class="section-title">Why Choose ECO SNAP</h2>
+        <p class="section-subtitle">
+          We provide a secure, reliable, and premium experience for both
+          clients and photographers.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="ri-verified-badge-fill"></i>
+          </div>
+          <h3>Verified Professionals</h3>
+          <p>
+            Every photographer undergoes a strict vetting process to ensure
+            high-quality results and professional conduct.
+          </p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.1s">
+          <div class="feature-icon">
+            <i class="ri-shield-check-fill"></i>
+          </div>
+          <h3>Secure Booking Process</h3>
+          <p>
+            Your payments are held securely until the shoot is completed,
+            providing peace of mind for all your bookings.
+          </p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.2s">
+          <div class="feature-icon">
+            <i class="ri-award-fill"></i>
+          </div>
+          <h3>Quality Service</h3>
+          <p>
+            We guarantee high-resolution, professionally edited photos
+            delivered on time, every time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         8. POPULAR PACKAGES
+         ============================ -->
+  <section class="packages-section" id="packages">
+    <div class="eco-container">
+      <div class="section-header reveal">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Popular Packages</h2>
+        <p class="section-subtitle">
+          Transparent pricing options tailored for different types of events.
+        </p>
+      </div>
+
+      <div class="packages-grid">
+        <!-- Package 1 -->
+        <div class="package-card reveal">
+          <h3 class="package-name">Birthday Special</h3>
+          <p class="package-desc">
+            Perfect for small gatherings and parties.
+          </p>
+          <div class="package-price">
+            <span class="amount">Rs. 8,999</span>
+            <span class="period">/event</span>
+          </div>
+          <ul class="package-features">
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 2 Hours Coverage
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 50 Edited Photos
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> Online Gallery
+            </li>
+          </ul>
+          <button class="btn-package btn-package-outline">
+            Select Package
+          </button>
+        </div>
+
+        <!-- Package 2 — Featured -->
+        <div class="package-card featured reveal" style="transition-delay: 0.1s">
+          <div class="package-badge">Most Popular</div>
+          <h3 class="package-name">Wedding Premium</h3>
+          <p class="package-desc">
+            Comprehensive coverage for your big day.
+          </p>
+          <div class="package-price">
+            <span class="amount">Rs. 1,49,999</span>
+            <span class="period">/event</span>
+          </div>
+          <ul class="package-features">
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 8 Hours Coverage
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 300+ Edited Photos
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 2 Photographers
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> Premium Photo Album
+            </li>
+          </ul>
+          <button class="btn-package btn-package-filled">
+            Select Package
+          </button>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="package-card reveal" style="transition-delay: 0.2s">
+          <h3 class="package-name">Corporate Event</h3>
+          <p class="package-desc">
+            Professional coverage for business events.
+          </p>
+          <div class="package-price">
+            <span class="amount">Rs. 59,999</span>
+            <span class="period">/event</span>
+          </div>
+          <ul class="package-features">
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 4 Hours Coverage
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> 150 Edited Photos
+            </li>
+            <li>
+              <i class="ri-checkbox-circle-fill"></i> Next-day Delivery
+            </li>
+          </ul>
+          <button class="btn-package btn-package-outline">
+            Select Package
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         9. TESTIMONIALS
+         ============================ -->
+  <section class="testimonials-section">
+    <div class="eco-container">
+      <div class="section-header reveal">
+        <div class="section-label">Testimonials</div>
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p class="section-subtitle">
+          Read reviews from people who found their perfect photographer
+          through ECO SNAP.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Review 1 -->
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+          </div>
+          <p class="quote">
+            "Finding a wedding photographer used to be stressful, but ECO SNAP made it seamless. The process was
+            effortless and the photos turned out stunning!"
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHPVbFE__POTa5RcH8oI51tdOZ7-KYvHZNzjgpgoWmr_i6tyqWeAlp5G9EBilDFyWgLj0MyZtDFSGea0XrH_4QaS6Uwd-yznTpMIVt2yKSp65sIrAi8RlxpPXc4JbYwTYS0bxpZTGd052YLcwrovfJM-f00f9w7C3h9PLzW4uv8qCaIEdd0T-cOf23-yBEGIMmrXEPEN1OUs0lKSZahmLjhOwlao7DxVcF4UuIr6qgIDqZiDQhkwZ57g"
+              alt="Sita P." />
+            <div>
+              <div class="author-name">Sita P.</div>
+              <div class="author-role">Wedding Client, Kathmandu</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="testimonial-card reveal" style="transition-delay: 0.1s">
+          <div class="testimonial-stars">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+          </div>
+          <p class="quote">
+            "We booked a photographer for our annual corporate summit. Professional, punctual, and delivered outstanding
+            headshots and event coverage."
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJtarV-pgPfye5VkrbWu0jLD9exz7VKuSsYpUUfFCnuifgbOk_1gTE_bYmRczoGnBfrvCZeudh3W8lWAFFBW0tYSjS6bnvTQydWAWilQYOmmjisWz44VWPbApeLiIFwwVdJ1FoR66Q2g_aOYfrW-JgCyHS0Zo4MQzlO1nerL6wTxUqll278YMoL1ZgbZJXV4KX1QKileRat92MM4qWOVFzyP0mxC3jYeyKbepDI26nFRDryrdfz1sJEQ"
+              alt="Bikash T." />
+            <div>
+              <div class="author-name">Bikash T.</div>
+              <div class="author-role">Everest Tech Solutions, Lalitpur</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="testimonial-card reveal" style="transition-delay: 0.2s">
+          <div class="testimonial-stars">
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-fill"></i>
+            <i class="ri-star-half-fill"></i>
+          </div>
+          <p class="quote">
+            "The platform gave us so many great options within our budget. Booking was simple, and the family portraits
+            are absolutely gorgeous."
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxgKhmVORqkgZ_Fx6Cc0BNUXEz_3u7s-iWlZZgKroQHtpT5y05G2JYUJkjDvEcYKVU70sN4h963EFW6d8Nw3UWlF6a805kirDre8gO0dCKMQy4EbWtWJu8h8o8XXcvkbdSpzbqk1Nm03McyW-EDwauYxnScLeWCa_8sXnug49YLmDAV11gUuTyfsbCD0qxYq5NZ7WLLUI5lPhuidnW0jkKimMIf1jz6_wj7aYTwsXyZIx3x-2xlt6Wdw"
+              alt="Sunita B." />
+            <div>
+              <div class="author-name">Sunita B.</div>
+              <div class="author-role">Family Session, Pokhara</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         10. STATISTICS
+         ============================ -->
+  <section class="stats-section">
+    <div class="eco-container">
+      <div class="stats-grid reveal">
+        <div class="stat-item">
+          <div class="stat-number" data-target="500+">0</div>
+          <div class="stat-label">Photographers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="2000+">0</div>
+          <div class="stat-label">Bookings</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="4.9">0</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="20+">0</div>
+          <div class="stat-label">Districts Covered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         11. CTA BANNER
+         ============================ -->
+  <section class="cta-section" id="contact">
+    <div class="eco-container">
+      <div class="cta-banner reveal">
+        <div class="cta-content">
+          <h2>Ready to Book Your Photographer?</h2>
+          <p>
+            Join thousands of happy clients who have captured their special
+            moments with ECO SNAP's verified professionals.
+          </p>
+          <div class="cta-buttons">
+            <a href="pages/photographers.html" class="btn btn-white">Start Searching</a>
+            <a href="pages/register.html?role=photographer" class="btn btn-ghost">Join as Photographer</a>
+          </div>
+        </div>
+        <div class="cta-image">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4DcxW4gaUJ2vWa9Lq5V4Q6br9oVLVS-OMjI1LDhZAlwfYgnGKv4sb_AkCnlTNFjLU4iwj4xcug5bYvNukrqrfauFtymr5biMIEjH3bQ251cxHDdoTEDlwZnGirmlRqr46vBBABbPlAkCsAwdErLHRnNBGCvZoTA2odmvpTnMHE-hWqq3vXEmjUT68EcXRdamdd362Yg8NJbEUnEDRMapgLeSehvisKS93OElCnM6K9vxGGU6QOfey0Q"
+            alt="Photography Camera" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         12. FOOTER
+         ============================ -->
+  <footer class="footer">
+    <div class="eco-container footer-compact">
+      <div class="footer-left">
+        <a href="index.html" class="footer-logo">
+          <i class="ri-camera-lens-fill"></i>
+          ECO SNAP
+        </a>
+        <span class="footer-copy">© 2026 ECO SNAP. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="pages/photographers.html">Photographers</a>
+          <a href="pages/packages.html">Packages</a>
+          <a href="pages/about.html">About</a>
+          <a href="pages/contact.html">Contact</a>
+        </nav>
+        <div class="footer-socials">
+          <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+          <a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+          <a href="#" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="./assets/js/session.js"></script>
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/api.js"></script>
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/home.js"></script>
 </body>
+
 </html>

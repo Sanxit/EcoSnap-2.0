@@ -1,0 +1,259 @@
+/* EcoSnap — Packages Page Styles */
+
+/* ============================================
+   1. PAGE HEADER
+   ============================================ */
+.packages-page-header {
+  text-align: center;
+  padding: 120px 0 60px;
+}
+
+.packages-page-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-black);
+  margin-bottom: 1rem;
+}
+
+.packages-page-header p {
+  font-size: 1.1rem;
+  color: var(--gray-600);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   2. CATEGORY TABS
+   ============================================ */
+.packages-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.packages-tabs-inner {
+  display: flex;
+  background: var(--primary-white);
+  border-radius: var(--radius-full);
+  padding: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.packages-tab {
+  padding: 12px 32px;
+  border-radius: var(--radius-full);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  background: transparent;
+  font-family: var(--font-primary);
+}
+
+.packages-tab.active {
+  background: var(--primary-accent);
+  color: var(--primary-color);
+}
+
+.packages-tab:hover:not(.active) {
+  color: var(--primary-black);
+}
+
+/* ============================================
+   3. PRICING GRID
+   ============================================ */
+.packages-page-section {
+  padding: 40px 0 100px;
+}
+
+.packages-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  align-items: center;
+}
+
+.package-grid-container {
+  display: none;
+}
+
+.package-grid-container.active {
+  display: block;
+}
+
+/* ============================================
+   4. PRICING CARDS
+   ============================================ */
+.pricing-card {
+  background: var(--primary-white);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  border: 1px solid var(--gray-100);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.pricing-card.premium {
+  border: 2px solid var(--primary-color);
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.pricing-card.premium:hover {
+  transform: scale(1.05) translateY(-5px);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--warning);
+  color: var(--primary-black);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+}
+
+.pricing-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-black);
+  margin-bottom: 16px;
+}
+
+.pricing-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.pricing-amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.pricing-period {
+  font-size: 1rem;
+  color: var(--gray-500);
+}
+
+.pricing-desc {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.pricing-features {
+  margin-bottom: 40px;
+}
+
+.pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  color: var(--gray-800);
+}
+
+.pricing-features li i.ri-checkbox-circle-line {
+  color: var(--success);
+  font-size: 1.2rem;
+}
+
+.pricing-features li i.ri-close-circle-line {
+  color: var(--gray-400);
+  font-size: 1.2rem;
+}
+
+.pricing-features li.disabled {
+  color: var(--gray-400);
+  text-decoration: line-through;
+}
+
+.pricing-features li .highlight {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.btn-pricing {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: block;
+  font-family: var(--font-primary);
+  border: none;
+}
+
+.btn-pricing-outline {
+  background: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-pricing-outline:hover {
+  background: var(--primary-accent);
+}
+
+.btn-pricing-filled {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-white);
+}
+
+.btn-pricing-filled:hover {
+  background: var(--primary-dark);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 992px) {
+  .packages-page-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .pricing-card.premium {
+    transform: scale(1);
+  }
+
+  .pricing-card.premium:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 576px) {
+  .packages-tabs-inner {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+  }
+
+  .packages-tab {
+    border-radius: var(--radius-md);
+  }
+}

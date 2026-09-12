@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/camera-32.png" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Photographers — ECO SNAP Photography Marketplace</title>
+  <meta name="description"
+    content="Browse and book 124+ professional photographers across all specialties. Filter by specialty, location, and price to find your perfect match on ECO SNAP." />
+
+<!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Remixicon -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/photographers.css" />
+</head>
+
+<body>
+  <!-- ============================
+         1. NAVBAR
+         ============================ -->
+  <nav class="navbar" id="navbar">
+    <div class="eco-container">
+      <a href="../index.html" class="navbar-brand">
+        <i class="ri-camera-lens-fill"></i>
+        ECO SNAP
+      </a>
+
+      <div class="navbar-links">
+        <a href="../index.html">Home</a>
+        <a href="photographers.html" class="active">Photographers</a>
+        <a href="packages.html">Packages</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="navbar-actions">
+        <a href="login.html" class="btn-login">Login</a>
+        <a href="register.html" class="btn-cta">Get Started</a>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="../index.html">Home</a>
+    <a href="photographers.html" class="active">Photographers</a>
+    <a href="packages.html">Packages</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <div class="mobile-nav-cta">
+      <a href="login.html" class="btn btn-outline" style="justify-content: center">Login</a>
+      <a href="register.html" class="btn btn-primary" style="justify-content: center">Get Started</a>
+    </div>
+  </div>
+
+  <!-- ============================
+         2. PAGE HERO
+         ============================ -->
+  <section class="pg-hero">
+    <div class="eco-container">
+      <div class="pg-hero-inner">
+        <div class="pg-hero-text reveal-left">
+          <div class="pg-breadcrumb">
+            <a href="../index.html">Home</a>
+            <i class="ri-arrow-right-s-line"></i>
+            <span>Photographers</span>
+          </div>
+          <h1 class="pg-title">
+            Found <span>124</span> Professional Photographers
+          </h1>
+          <div class="pg-location-badge">
+            <i class="ri-map-pin-2-fill"></i>
+            Kathmandu, Nepal
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         3. MAIN LAYOUT
+         ============================ -->
+  <section class="pg-layout">
+    <div class="eco-container">
+      <div class="pg-layout-inner">
+
+        <!-- ========================
+               SIDEBAR — REFINE SEARCH
+               ======================== -->
+        <aside class="filter-sidebar reveal-left" id="filterSidebar">
+          <div class="filter-sidebar-title" id="filterSidebarTitle">
+            <div class="filter-sidebar-title-left">
+              <i class="ri-equalizer-line"></i>
+              <span>Refine Search</span>
+              <span class="filter-active-badge" id="filterActiveBadge">0</span>
+            </div>
+            <button type="button" class="filter-mobile-toggle" id="filterMobileToggle" aria-label="Toggle refine search filters" aria-expanded="true">
+              <span class="filter-toggle-state">Collapse</span>
+              <i class="ri-arrow-down-s-line filter-toggle-chevron"></i>
+            </button>
+          </div>
+
+          <div class="filter-sidebar-content" id="filterSidebarContent">
+            <!-- Specialties -->
+            <div class="filter-group open" id="filterSpecialties">
+              <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true"
+                aria-controls="specialtiesBody">
+                <h4>
+                  <i class="ri-camera-line"></i>
+                  Specialties
+                </h4>
+                <i class="ri-arrow-down-s-line filter-group-chevron"></i>
+              </div>
+              <div class="filter-group-body" id="specialtiesBody">
+                <label class="filter-option">
+                  <input type="checkbox" value="wedding" id="specWedding" />
+                  <span class="filter-opt-text">Wedding</span>
+                  <span class="filter-count">2</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="portrait" id="specPortrait" />
+                  <span class="filter-opt-text">Portrait</span>
+                  <span class="filter-count">2</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="corporate" id="specCorporate" />
+                  <span class="filter-opt-text">Corporate</span>
+                  <span class="filter-count">3</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="family" id="specFamily" />
+                  <span class="filter-opt-text">Family &amp; Events</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="product" id="specProduct" />
+                  <span class="filter-opt-text">Product &amp; Commercial</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="birthday" id="specBirthday" />
+                  <span class="filter-opt-text">Birthday</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="graduation" id="specGraduation" />
+                  <span class="filter-opt-text">Graduation</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="engagement" id="specEngagement" />
+                  <span class="filter-opt-text">Engagement</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="architecture" id="specArchitecture" />
+                  <span class="filter-opt-text">Architecture</span>
+                  <span class="filter-count">1</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Price Range (Clean Budget Slider) -->
+            <div class="filter-group open" id="filterPrice">
+              <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true"
+                aria-controls="priceBody">
+                <h4>
+                  <i class="ri-money-dollar-circle-line"></i>
+                  Price Budget
+                </h4>
+                <i class="ri-arrow-down-s-line filter-group-chevron"></i>
+              </div>
+              <div class="filter-group-body" id="priceBody">
+                <div class="price-range-wrap">
+                  <div class="price-range-labels">
+                    <span>Rs. 15,000</span>
+                    <span>Max: <strong id="priceMax">Rs. 60,000</strong></span>
+                  </div>
+                  <input type="range" class="price-slider" id="priceSlider" min="15000" max="60000" value="60000" step="5000" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="filter-group open" id="filterLocation">
+              <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true"
+                aria-controls="locationBody">
+                <h4>
+                  <i class="ri-map-pin-line"></i>
+                  Location
+                </h4>
+                <i class="ri-arrow-down-s-line filter-group-chevron"></i>
+              </div>
+              <div class="filter-group-body" id="locationBody">
+                <label class="filter-option">
+                  <input type="checkbox" value="kathmandu" id="locKathmandu" />
+                  <span class="filter-opt-text">Kathmandu</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="lalitpur" id="locLalitpur" />
+                  <span class="filter-opt-text">Lalitpur</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="pokhara" id="locPokhara" />
+                  <span class="filter-opt-text">Pokhara</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="bhaktapur" id="locBhaktapur" />
+                  <span class="filter-opt-text">Bhaktapur</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="chitwan" id="locChitwan" />
+                  <span class="filter-opt-text">Chitwan</span>
+                  <span class="filter-count">1</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="other" id="locOther" />
+                  <span class="filter-opt-text">Other Hubs</span>
+                  <span class="filter-count">1</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn-apply-filter" id="btnApplyFilter">
+              <i class="ri-filter-3-line"></i> Apply Filters
+            </button>
+            <button class="btn-clear-filter" id="btnClearFilters">
+              Clear all filters
+            </button>
+          </div>
+        </aside>
+
+        <!-- ========================
+               MAIN — CARDS + SORT
+               ======================== -->
+        <main class="pg-main" id="pgMain">
+
+          <!-- Sort Bar -->
+          <div class="sort-bar reveal">
+            <div class="sort-bar-left">
+              <p class="result-count" id="resultCount">
+                Showing <strong>6</strong> photographers
+              </p>
+            </div>
+            <div class="sort-bar-right">
+              <span class="sort-label">Sort by:</span>
+              <div class="sort-select-wrap">
+                <select class="sort-select" id="sortSelect">
+                  <option value="relevance">Relevance</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                </select>
+                <i class="ri-arrow-down-s-line"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cards Grid -->
+          <div class="pg-cards-grid reveal" id="pgCardsGrid">
+
+            <!-- Card 1 — Sangeeta Shrestha -->
+            <div class="pg-card" data-profile-id="1" data-specialties="wedding,portrait,corporate" data-location="kathmandu" data-price="50000" data-rating="4.9" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWb1HFQ4gye_KvOSEQv17jMl-pl1VRCe8ZF0WG-wI-Gw9uDQ7Gv3LzW8mmy3_ygaRzIJiT-I9e72DoRHPFrd85d0rDQNxNr0A6KsdhfmucvFrDW1bEwkpBUUEmJTxzlohZGgqILKpsBCmZ0jyVLKDyGyi9beJsjkeHJX8ztkhxrLzYEAbxuuU4SkC9MQjtPC8ng2mvzaJ9yAr3npDVf_slwndjQtyS9OJhOo1_R8wyvLjGd3nJUOTULQ"
+                  alt="Sangeeta Shrestha Wedding Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 4.9
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2bc2baAJ2uWyZegNUVVFOvXcG5pj44gXOBW9P99m4fLZv8MyeN3Jjj6AL8yOvgrOa3jvI1-13WFafcE8PzBIXDqfuh22kv2_zDW6o77ylzEkodAqBlArLmGFpufEIUu1o6-iks6J6nmiyEntkeYGYDbp8KgY7nE1Chng-WnyQ0niMyq1mjQR-iP2F5gm0w9x4P6jdjmcwInVyiI-mhsYab7ujzC5CDyabi_lwJ6HRuVPZ8NJ8dNWk5w"
+                  alt="Sangeeta Shrestha" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Sangeeta Shrestha</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Kathmandu
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Wedding</span>
+                    <span>Portrait</span>
+                    <span>Corporate</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 50,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Card 2 — Roshan Maharjan -->
+            <div class="pg-card" data-profile-id="2" data-specialties="corporate,product" data-location="lalitpur" data-price="35000" data-rating="4.8" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLtjwkITVVShLLquHGczx27Fb6lnVelsacdG5i1xmjjF_ijfeSoaKmNY7anI9TyzkQQJIxqEYtnHlhKJjXwiMM0w1EOm7VjbQAZ2qioVnuzHpnkMlg69xUen5GHqhcydRvvdIawuW7LLfk97objy2Gtb82Fg1F92J9vtnPOEcY75un5EI5bVXNd_sFoCtWPtFUld9p0vLNLgELOTLfx4JpUYtaES8AquGhrdaedYTqe22AX56FZ5ROvg"
+                  alt="Roshan Maharjan Commercial Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 4.8
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrZRQsS02C_hw5LNetKNJvFtsLk4j4Y7YKFdaDDS7Ou9lVrDx0kzUPXOoTYoXx1PVauObxK5SHwTbSD9XbfoNg6zBghRzBMRQEWILqDIUsqXW7LM5IJCbaX-xBC1jDXVDonWtR9lKg5XwvDfYy1rQYq9IYYLEb2vW7W-dJS8PF4IUgvj4ybyQAWMH8JTWkrPS1bv1YjTp8DKt21uNXfy1i9MfeoU13Si_AbOuWwk--uAe0LoHR8aEM2g"
+                  alt="Roshan Maharjan" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Roshan Maharjan</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Lalitpur
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Corporate</span>
+                    <span>Product</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 35,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Card 3 — Anjali Gurung -->
+            <div class="pg-card" data-profile-id="3" data-specialties="family,maternity,birthday" data-location="pokhara" data-price="20000" data-rating="5.0" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXRmI5UgMzQ2qmvBW2WtXqpH_GPGuoCUHAHYT-pGxRdQWKnqgbUg8nnII2ZakVSwR3Zk_0M2VodgiwZlYuQPgF8KAfMhI1uC92HCNRsDLvW1GRYvgFNt_nvKGlEwtqtz6UOgDJi8uD26indgvzk4EdpPzoCu3ZDbaR340VEhf8oBlMhdztqocWc3eutVm1WZonzk4vUKWLOoOdChAgqOXtwMietssCykkPx1AUllfMlCg7ID68P1jIBg"
+                  alt="Anjali Gurung Family Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 5.0
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFi6FhEr8_k-PTk943x16LIMKpbOCEWsycj-sLdfjSJiqanWyJ1vKGwmgTU2bfkCauIHe2HL3tL0oO0BWOuQebeG7g1Mz-vZfbj0Z6YFOv3YTBlKRPXu9YmYpzWh2VJE4rj7rkfs_JiVq5suuii32aXhWmFWIEWCfjF0Ch-iMqq3xudQv7H--ATQwcTYnhR71jcsFY5ngHYchwaXyw96LADrk6JfI4HCfTy1C3NUq4hNiYU6LdshjJ_w"
+                  alt="Anjali Gurung" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Anjali Gurung</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Pokhara
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Family</span>
+                    <span>Maternity</span>
+                    <span>Birthday</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 20,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Card 4 — Manish Khadka -->
+            <div class="pg-card" data-profile-id="4" data-specialties="architecture,corporate" data-location="bhaktapur" data-price="30000" data-rating="4.9" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUgRQFXyY3teHI5iFwR1eMfMl1fveUDVWNslurAwd2FnncwOBcJPemPr7C5BhSMm3n2BUu7Vp-9VxV92kdgU0gFlWibj5Qrddjth-PAXek2bPOCoJ-mKKXa-hwqs2t4Wh_WVKWOkB-CDS3s1ydn59yBVCGgpOzwax6EailPkWctfdNrjPi33BC3KzPcMv3evFeGirAqAArnkJtLoV84H2xl6Nz7Qqa5_t__IY-FaYqlT9H8tvUx06tDA"
+                  alt="Manish Khadka Architecture Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 4.9
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ZFTSx01EgmhMwYkQmKpbbkBDZUuYevRYDcust10w2brGV-CVT5kLjTVqPkNVUOozhsKFqtNgEBlQoSsEzftMeDjqoZIHSIrw5GH8RKMMtXigOvlzPW2tnNifP2HzMn-0Id_FgX6GaVIn3ARnQdDSHliVVaESs20BiuTpxLZHyrQbjylNnE-tdk5feXrjhozpDYKwrZcHhhXBpUj6efbAzycoKnrYK4IjG0YH4RcKiMXX0-pj-lmvrw"
+                  alt="Manish Khadka" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Manish Khadka</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Bhaktapur
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Architecture</span>
+                    <span>Corporate</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 30,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Card 5 — Alisha Shrestha -->
+            <div class="pg-card" data-profile-id="5" data-specialties="wedding,engagement" data-location="chitwan" data-price="60000" data-rating="5.0" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd1iMeOojgKTLYtWTLWhS3dP2R1bQDMVdIXy8QVtuyV_nKwlEV1ePS4Xp86Vu5S0VJRkK9VRMK6A5vZbakIWLCkiV3_OlhuQCfpT7ABQFAMek1PoEFu81F9zkiXuQp26OUzX4DvKIB4fKpMPd0lNBtNxesRySw52jR4Qr7menbXOJ-nupzMohi1HSE2_w4UbSkeZeJD4Tlw3a5rlFj18VW8W0t1zvZa5xigDPeTgsA5GB53LtVHPLSNQ"
+                  alt="Alisha Shrestha Wedding Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 5.0
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcc6TJzWLDOLtLf9Zo2uDTtUuWt8NszUc8AWUvKyDGpDWLaKQuqBwXTmJ9JvuuABvQos1Vtp1iTjC34DWOUYAZKIYhUdPZEU7hW-TQrF20T9HIrbYgBWcrCOHGk_pb4PKHp24khKcrr63kVN6pBEBt3hYFxZEB0wLNQVTOKsZxop1mLjZKL1GGlvMftXGyBBcZZgSSQA6EHWM9d4MDPNRqMq5uffh6m8Jxq5eXPU0KUzDRx585aMXbwQ"
+                  alt="Alisha Shrestha" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Alisha Shrestha</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Chitwan
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Wedding</span>
+                    <span>Engagement</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 60,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Card 6 — Sameer Bajracharya -->
+            <div class="pg-card" data-profile-id="6" data-specialties="graduation,portrait" data-location="other" data-price="15000" data-rating="4.7" style="cursor:pointer">
+              <div class="pg-card-cover">
+                <img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkDYIXtqRlwcOpYk1oFxM2q2Kz14E_rXpr9GkubN3afGCnTXYFntodJFlRuWxJZ80YWfOhd4eqhjsUKx2A_ybaZbmD07145lU360aWglqfws_3RQ7PekTFY8Tm2jjVFMTrslM9E57KbNQDQLzmWUmjVGg06nbHR8RnAbrz5uvGe5BBk6U5pT-liQQ48hBbbKUeyTDnwS8wiiPMfJ83TXnR_OvFBoJ2bhvgJWQMO3OKfRRAGagAiBm15g"
+                  alt="Sameer Bajracharya Portrait Photography" />
+                <div class="pg-card-rating-badge">
+                  <i class="ri-star-fill"></i> 4.7
+                </div>
+                <div class="pg-card-verified">
+                  <i class="ri-verified-badge-fill"></i> Verified
+                </div>
+              </div>
+              <div class="pg-card-body">
+                <img class="pg-card-avatar"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYfUIrM-nMMjDR-eNrjjG1hvZHUJfupMiqd1wudX_m54M6dICUxKA8RYVVfx7mXNg2d4gptiWWTGQpczIrCJiU9jk4C7qKhTqwG6912qpDgy9bHDKECYqZW12sdEECGQGKSJmLmmUPHHpJPKAdEiq6T8s2CrRjR8kFMm1B5t34RLiLnyteRJGXen_Z_Nd-y_wm8QJ6FucJ148s7N6VXuLXMDbMTf1_J4ZijsdW7sPBybvAcVWZJO__ZA"
+                  alt="Sameer Bajracharya" />
+                <div class="pg-card-info">
+                  <h3 class="pg-card-name">Sameer Bajracharya</h3>
+                  <p class="pg-card-location">
+                    <i class="ri-map-pin-2-fill"></i>
+                    Dharan
+                  </p>
+                  <div class="pg-card-tags">
+                    <span>Graduation</span>
+                    <span>Portrait</span>
+                  </div>
+                </div>
+              </div>
+              <div class="pg-card-footer">
+                <div class="pg-card-price">
+                  <span class="price-from">Starting from</span>
+                  <span class="price-amount">Rs. 15,000</span>
+                </div>
+                <button class="btn-view-profile">View Profile</button>
+              </div>
+            </div>
+
+            <!-- Empty State (Shown when no cards match filters) -->
+            <div class="pg-empty-state" id="pgEmptyState">
+              <i class="ri-search-eye-line"></i>
+              <h3>No photographers found</h3>
+              <p>No professionals match your selected specialty, budget, or location. Try clearing or adjusting your filters.</p>
+              <button type="button" class="btn btn-outline" id="btnResetFilters">Reset all filters</button>
+            </div>
+
+          </div>
+          <!-- /pg-cards-grid -->
+
+        </main>
+        <!-- /pg-main -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================
+         4. FOOTER
+         ============================ -->
+  <footer class="footer">
+    <div class="eco-container footer-compact">
+      <div class="footer-left">
+        <a href="../index.html" class="footer-logo">
+          <i class="ri-camera-lens-fill"></i>
+          ECO SNAP
+        </a>
+        <span class="footer-copy">© 2026 ECO SNAP. All rights reserved.</span>
+      </div>
+      <div class="footer-right">
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="photographers.html">Photographers</a>
+          <a href="packages.html">Packages</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <div class="footer-socials">
+          <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+          <a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+          <a href="#" aria-label="Twitter"><i class="ri-twitter-x-line"></i></a>
+          <a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../assets/js/session.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/photographers.js"></script>
+</body>
+
+</html>
+

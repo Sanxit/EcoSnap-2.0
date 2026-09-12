@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/camera-32.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — ECO SNAP</title>
+  <meta name="description" content="Manage your ECO SNAP bookings, find photographers, and track your events." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard-client.css" />
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<!-- ===== MODALS ===== -->
+<!-- Booking Modal -->
+<div class="modal-overlay" id="modalBook" onclick="if(event.target===this)closeModal('modalBook')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalBookTitle">Book Photographer</h3>
+      <button class="modal-close" onclick="closeModal('modalBook')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Photographer</label><input class="form-input" id="bkPhotographer" readonly style="background:var(--gray-50);"></div>
+      <div class="form-group">
+        <label class="form-label">Event Date *</label>
+        <input class="form-input" id="bkDate" type="date">
+        <span class="form-error" id="bkDateError"></span>
+      </div>
+      <div class="form-group"><label class="form-label">Event Type *</label>
+        <select class="form-input" id="bkEventType">
+          <option value="WEDDING">WEDDING</option>
+          <option value="BIRTHDAY">BIRTHDAY</option>
+          <option value="ENGAGEMENT">ENGAGEMENT</option>
+          <option value="CULTURAL">CULTURAL</option>
+          <option value="CORPORATE">CORPORATE</option>
+          <option value="OTHER">OTHER</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Time Slot</label>
+        <select class="form-input" id="bkTimeSlot">
+          <option value="MORNING">MORNING</option>
+          <option value="AFTERNOON">AFTERNOON</option>
+          <option value="EVENING">EVENING</option>
+          <option value="FULL_DAY">FULL_DAY</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Event Location *</label><input class="form-input" id="bkLocation" placeholder="Venue name, City"></div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="bkNotes" rows="2" style="resize:vertical;" placeholder="Any special requirements..."></textarea></div>
+      <div class="avail-check" id="bkAvailCheck"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalBook')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" id="bkSubmitBtn" onclick="submitBooking()">Check Availability</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Booking Notes Modal -->
+<div class="modal-overlay" id="modalEditBooking" onclick="if(event.target===this)closeModal('modalEditBooking')">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-header"><h3>Edit Booking Notes</h3><button class="modal-close" onclick="closeModal('modalEditBooking')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="ebkId">
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="ebkNotes" rows="4" style="resize:vertical;"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalEditBooking')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveBookingNotes()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Review Create/Edit Modal -->
+<div class="modal-overlay" id="modalReview" onclick="if(event.target===this)closeModal('modalReview')">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-header"><h3 id="modalReviewTitle">Write a Review</h3><button class="modal-close" onclick="closeModal('modalReview')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="rvId">
+      <div class="form-group"><label class="form-label">Booking</label><input class="form-input" id="rvBooking" readonly style="background:var(--gray-50);"></div>
+      <div class="form-group">
+        <label class="form-label">Rating *</label>
+        <div class="star-input" id="starInput">
+          <span data-v="1" onclick="setRating(1)">&#9733;</span>
+          <span data-v="2" onclick="setRating(2)">&#9733;</span>
+          <span data-v="3" onclick="setRating(3)">&#9733;</span>
+          <span data-v="4" onclick="setRating(4)">&#9733;</span>
+          <span data-v="5" onclick="setRating(5)">&#9733;</span>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Comment *</label><textarea class="form-input" id="rvComment" rows="4" style="resize:vertical;" placeholder="Share your experience..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalReview')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveReview()">Submit Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="modal-overlay" id="modalConfirm" onclick="if(event.target===this)closeModal('modalConfirm')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3 id="confirmTitle">Confirm Action</h3><button class="modal-close" onclick="closeModal('modalConfirm')">&times;</button></div>
+    <p class="confirm-msg" id="confirmMsg"></p>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalConfirm')">Cancel</button>
+      <button class="btn" id="confirmOkBtn" style="padding:8px 20px;border-radius:var(--radius-sm);background:#dc2626;color:#fff;border:none;cursor:pointer;font-weight:600;">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="dash-layout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <a href="../index.html" class="sidebar-brand">
+      <i class="ri-camera-lens-fill"></i> ECO SNAP
+    </a>
+    <div class="sidebar-role">
+      <span class="role-badge client"><i class="ri-user-line"></i> Client</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">My Account</div>
+      <a class="nav-item active" href="#home" id="nav-home" onclick="showSection('home',this)">
+        <i class="ri-home-4-line"></i> Home
+      </a>
+      <a class="nav-item" href="#bookings" id="nav-bookings" onclick="showSection('bookings',this)">
+        <i class="ri-calendar-check-line"></i> My Bookings
+      </a>
+      <a class="nav-item" href="#reviews" id="nav-reviews" onclick="showSection('reviews',this)">
+        <i class="ri-star-line"></i> My Reviews
+      </a>
+      <a class="nav-item" href="#notifications" id="nav-notifications" onclick="showSection('notifications',this)">
+        <i class="ri-notification-3-line"></i> Notifications
+        <span id="notifBadge" style="margin-left:auto;background:var(--primary-color);color:#fff;font-size:.65rem;font-weight:700;padding:2px 7px;border-radius:20px;display:none;"></span>
+      </a>
+
+      <div class="nav-section-label">Explore</div>
+      <a class="nav-item" href="#find" id="nav-find" onclick="showSection('find',this)">
+        <i class="ri-search-eye-line"></i> Find Photographers
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#profile" id="nav-profile" onclick="showSection('profile',this)">
+        <i class="ri-user-settings-line"></i> Profile
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebarAvatar">PS</div>
+        <div class="sidebar-user-info">
+          <div class="user-name" id="sidebarName">Priya Sharma</div>
+          <div class="user-email" id="sidebarEmail">client@ecosnap.com</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="EcoSnapSession.logout()">
+        <i class="ri-logout-box-r-line"></i> Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+        <div>
+          <h2 id="topbarTitle">Home</h2>
+          <p id="topbarSub">Welcome back, Priya</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn" onclick="showSection('find',null)"><i class="ri-search-line"></i></button>
+        <button class="topbar-icon-btn" onclick="showSection('notifications',null)">
+          <i class="ri-notification-3-line"></i>
+          <span class="notif-dot" id="topbarNotifDot"></span>
+        </button>
+        <div class="topbar-avatar" id="topbarAvatar">PS</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- ======= SECTION: HOME ======= -->
+      <section id="section-home">
+        <div class="page-header">
+          <h1>My Dashboard</h1>
+          <p>Track your bookings and upcoming events at a glance</p>
+        </div>
+
+        <div class="stats-grid" id="homeStats"></div>
+
+        <!-- Upcoming Event banner -->
+        <div id="upcomingBanner"></div>
+
+        <div class="dash-grid">
+          <!-- Recent bookings -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Recent Bookings</h3>
+              <a class="card-action" href="#bookings" onclick="showSection('bookings',null)">All bookings &rarr;</a>
+            </div>
+            <div id="homeRecentBookings"></div>
+          </div>
+
+          <!-- Recommended photographers -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Recommended For You</h3>
+              <a class="card-action" href="#find" onclick="showSection('find',null)">Browse all &rarr;</a>
+            </div>
+            <div id="homeRecommended"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: MY BOOKINGS ======= -->
+      <section id="section-bookings" style="display:none;">
+        <div class="page-header">
+          <h2>My Bookings</h2>
+          <p>All your event photography sessions</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Bookings</h3>
+            <a class="card-action" href="#find" onclick="showSection('find',null)">+ New Booking &rarr;</a>
+          </div>
+          <div class="filter-bar">
+            <select class="form-input" id="bkStatusFilter" onchange="renderMyBookings()">
+              <option value="">All Status</option>
+              <option value="PENDING">PENDING</option>
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="COMPLETED">COMPLETED</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="DECLINED">DECLINED</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="myBookingsTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: MY REVIEWS ======= -->
+      <section id="section-reviews" style="display:none;">
+        <div class="page-header">
+          <h2>My Reviews</h2>
+          <p>Reviews you have written for photographers</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>Your Reviews</h3></div>
+          <div id="myReviewsList"></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: NOTIFICATIONS ======= -->
+      <section id="section-notifications" style="display:none;">
+        <div class="page-header">
+          <h2>Notifications</h2>
+          <p>Platform updates and booking alerts</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Notifications</h3>
+            <button class="btn-xs edit" style="padding:6px 12px;font-size:.8rem;" onclick="markAllRead()">Mark All Read</button>
+          </div>
+          <div id="notificationsList"></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: FIND PHOTOGRAPHERS ======= -->
+      <section id="section-find" style="display:none;">
+        <div class="page-header">
+          <h2>Find Photographers</h2>
+          <p>Discover and book talented photographers across Nepal</p>
+        </div>
+        <div class="filter-bar">
+          <input class="form-input" id="findSearch" placeholder="Search by name, location, or specialization..." oninput="renderFindPhotographers()">
+        </div>
+        <div id="findPhotographersList"></div>
+      </section>
+
+      <!-- ======= SECTION: PROFILE ======= -->
+      <section id="section-profile" style="display:none;">
+        <div class="page-header">
+          <h2>My Profile</h2>
+          <p>Update your personal information and preferences</p>
+        </div>
+        <div class="dash-card" style="max-width:540px;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:28px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--primary-color);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;" id="profileInitials">PS</div>
+            <div>
+              <div style="font-weight:700;font-size:1.1rem;" id="profileName">Priya Sharma</div>
+              <div style="font-size:.85rem;color:var(--gray-500);" id="profileEmail">client@ecosnap.com</div>
+              <div style="margin-top:6px;"><span class="status-badge active">Active Client</span></div>
+            </div>
+          </div>
+          <div style="display:grid;gap:16px;">
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="profileNameInput" value="Priya Sharma"></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" value="client@ecosnap.com"></div>
+            <div class="form-group"><label class="form-label">Phone (Nepal)</label><input type="tel" class="form-input" value="+977 98XXXXXXXX"></div>
+            <div class="form-group"><label class="form-label">City</label>
+              <select class="form-input">
+                <option selected>Kathmandu</option><option>Lalitpur</option><option>Bhaktapur</option><option>Pokhara</option><option>Chitwan</option><option>Other</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="showToast('Profile saved successfully.','success')">Save Changes</button>
+          </div>
+        </div>
+        <div class="dash-card" style="max-width:540px;">
+          <div class="dash-card-header"><h3>Change Password</h3></div>
+          <div style="display:grid;gap:16px;">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" id="profPwdCur"></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" id="profPwdNew"></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" class="form-input" id="profPwdCf"></div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="changePassword()">Update Password</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- JavaScript -->
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/dashboard-client.js"></script>
+</body>
+</html>

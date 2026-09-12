@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/camera-32.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — ECO SNAP</title>
+  <meta name="description" content="ECO SNAP admin control panel to manage users, bookings, reviews, and notices." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Red+Rose:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/base.css" />
+  <link rel="stylesheet" href="../assets/css/layout.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard-admin.css" />
+</head>
+<body>
+<div id="toastContainer"></div>
+
+<!-- ===== MODALS ===== -->
+<!-- User Create/Edit Modal -->
+<div class="modal-overlay" id="modalUser" onclick="if(event.target===this)closeModal('modalUser')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalUserTitle">Add User</h3>
+      <button class="modal-close" onclick="closeModal('modalUser')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="uId">
+      <div class="form-group"><label class="form-label">Full Name *</label><input class="form-input" id="uName" placeholder="Full name"></div>
+      <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="uEmail" type="email" placeholder="user@email.com"></div>
+      <div class="form-group"><label class="form-label">Role</label>
+        <select class="form-input" id="uRole">
+          <option value="CUSTOMER">CUSTOMER</option>
+          <option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-input" id="uStatus">
+          <option value="ACTIVE">ACTIVE</option>
+          <option value="PENDING">PENDING</option>
+          <option value="SUSPENDED">SUSPENDED</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalUser')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveUser()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- User View Modal -->
+<div class="modal-overlay" id="modalUserView" onclick="if(event.target===this)closeModal('modalUserView')">
+  <div class="modal-box">
+    <div class="modal-header"><h3>User Details</h3><button class="modal-close" onclick="closeModal('modalUserView')">&times;</button></div>
+    <div id="modalUserViewBody" style="font-size:.9rem;line-height:1.8;"></div>
+  </div>
+</div>
+
+<!-- Photographer Edit Modal -->
+<div class="modal-overlay" id="modalPhotographer" onclick="if(event.target===this)closeModal('modalPhotographer')">
+  <div class="modal-box">
+    <div class="modal-header"><h3 id="modalPhotoTitle">Edit Photographer</h3><button class="modal-close" onclick="closeModal('modalPhotographer')">&times;</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="phId">
+      <div class="form-group"><label class="form-label">Specialization</label><input class="form-input" id="phSpec" placeholder="WEDDING, PORTRAIT..."></div>
+      <div class="form-group"><label class="form-label">Experience (Years)</label><input class="form-input" id="phExp" type="number" min="0"></div>
+      <div class="form-group"><label class="form-label">Hourly Rate (Rs.)</label><input class="form-input" id="phRate" type="number" min="0"></div>
+      <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="phLoc" placeholder="City, Nepal"></div>
+      <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="phBio" rows="3" style="resize:vertical;"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalPhotographer')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="savePhotographer()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Photographer View Modal -->
+<div class="modal-overlay" id="modalPhotoView" onclick="if(event.target===this)closeModal('modalPhotoView')">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Photographer Details</h3><button class="modal-close" onclick="closeModal('modalPhotoView')">&times;</button></div>
+    <div id="modalPhotoViewBody" style="font-size:.9rem;line-height:1.8;"></div>
+  </div>
+</div>
+
+<!-- Booking View Modal -->
+<div class="modal-overlay" id="modalBookingView" onclick="if(event.target===this)closeModal('modalBookingView')">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Booking Details</h3><button class="modal-close" onclick="closeModal('modalBookingView')">&times;</button></div>
+    <div id="modalBookingViewBody" style="font-size:.9rem;line-height:1.8;"></div>
+  </div>
+</div>
+
+<!-- Notice Create Modal -->
+<div class="modal-overlay" id="modalNotice" onclick="if(event.target===this)closeModal('modalNotice')">
+  <div class="modal-box">
+    <div class="modal-header"><h3>Create Notice</h3><button class="modal-close" onclick="closeModal('modalNotice')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="nTitle" placeholder="Notice title"></div>
+      <div class="form-group"><label class="form-label">Message *</label><textarea class="form-input" id="nMessage" rows="4" style="resize:vertical;" placeholder="Notice content..."></textarea></div>
+      <div class="form-group"><label class="form-label">Target Role</label>
+        <select class="form-input" id="nTarget">
+          <option value="ALL">ALL</option>
+          <option value="CUSTOMER">CUSTOMER</option>
+          <option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalNotice')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="saveNotice()">Post Notice</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="modal-overlay" id="modalConfirm" onclick="if(event.target===this)closeModal('modalConfirm')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3 id="confirmTitle">Confirm Action</h3><button class="modal-close" onclick="closeModal('modalConfirm')">&times;</button></div>
+    <p class="confirm-msg" id="confirmMsg"></p>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalConfirm')">Cancel</button>
+      <button class="btn" id="confirmOkBtn" style="padding:8px 20px;border-radius:var(--radius-sm);background:#dc2626;color:#fff;border:none;cursor:pointer;font-weight:600;">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal-overlay" id="modalPwd" onclick="if(event.target===this)closeModal('modalPwd')">
+  <div class="modal-box" style="max-width:400px;">
+    <div class="modal-header"><h3>Change Password</h3><button class="modal-close" onclick="closeModal('modalPwd')">&times;</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Current Password</label><input class="form-input" id="pwdCurrent" type="password"></div>
+      <div class="form-group"><label class="form-label">New Password</label><input class="form-input" id="pwdNew" type="password"></div>
+      <div class="form-group"><label class="form-label">Confirm New Password</label><input class="form-input" id="pwdConfirm" type="password"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" style="padding:8px 18px;border:1px solid var(--gray-300);background:#fff;border-radius:var(--radius-sm);cursor:pointer;" onclick="closeModal('modalPwd')">Cancel</button>
+      <button class="btn btn-primary" style="padding:8px 20px;border-radius:var(--radius-sm);" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<div class="dash-layout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <a href="../index.html" class="sidebar-brand">
+      <i class="ri-camera-lens-fill"></i> ECO SNAP
+    </a>
+    <div class="sidebar-role">
+      <span class="role-badge admin"><i class="ri-shield-star-line"></i> Admin</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item active" href="#overview" id="nav-overview" onclick="showSection('overview',this)">
+        <i class="ri-dashboard-3-line"></i> Dashboard
+      </a>
+
+      <div class="nav-section-label">Management</div>
+      <a class="nav-item" href="#users" id="nav-users" onclick="showSection('users',this)">
+        <i class="ri-group-line"></i> Users
+      </a>
+      <a class="nav-item" href="#photographers" id="nav-photographers" onclick="showSection('photographers',this)">
+        <i class="ri-camera-2-line"></i> Photographers
+      </a>
+      <a class="nav-item" href="#bookings" id="nav-bookings" onclick="showSection('bookings',this)">
+        <i class="ri-calendar-check-line"></i> Bookings
+      </a>
+      <a class="nav-item" href="#reviews" id="nav-reviews" onclick="showSection('reviews',this)">
+        <i class="ri-star-line"></i> Reviews
+      </a>
+      <a class="nav-item" href="#notices" id="nav-notices" onclick="showSection('notices',this)">
+        <i class="ri-notification-3-line"></i> Notices
+      </a>
+
+      <div class="nav-section-label">System</div>
+      <a class="nav-item" href="#settings" id="nav-settings" onclick="showSection('settings',this)">
+        <i class="ri-settings-3-line"></i> Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebarAvatar">AM</div>
+        <div class="sidebar-user-info">
+          <div class="user-name" id="sidebarName">Anil Maharjan</div>
+          <div class="user-email" id="sidebarEmail">admin@ecosnap.com</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="EcoSnapSession.logout()">
+        <i class="ri-logout-box-r-line"></i> Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()"><i class="ri-menu-line"></i></button>
+        <div>
+          <h2 id="topbarTitle">Dashboard</h2>
+          <p id="topbarSub">Welcome back, Anil</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn" onclick="showSection('notices',null)"><i class="ri-notification-3-line"></i><span class="notif-dot"></span></button>
+        <div class="topbar-avatar" id="topbarAvatar">AM</div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- ======= SECTION: OVERVIEW ======= -->
+      <section id="section-overview">
+        <div class="page-header">
+          <h1>Platform Overview</h1>
+          <p>Live snapshot of ECO SNAP Nepal performance metrics</p>
+        </div>
+
+        <div class="stats-grid" id="overviewStats"></div>
+
+        <!-- Quick Actions -->
+        <div class="dash-card" style="margin-bottom:20px;">
+          <div class="dash-card-header"><h3>Quick Actions</h3></div>
+          <div class="quick-actions">
+            <a class="quick-action-btn" href="#users" onclick="showSection('users',null);openModal('modalUser');resetUserForm();">
+              <i class="ri-user-add-line"></i><span>Add User</span>
+            </a>
+            <a class="quick-action-btn" href="#bookings" onclick="showSection('bookings',null)">
+              <i class="ri-calendar-line"></i><span>View Bookings</span>
+            </a>
+            <a class="quick-action-btn" href="#notices" onclick="showSection('notices',null)">
+              <i class="ri-notification-3-line"></i><span>Post Notice</span>
+            </a>
+            <a class="quick-action-btn" href="#reviews" onclick="showSection('reviews',null)">
+              <i class="ri-star-line"></i><span>Moderate Reviews</span>
+            </a>
+            <a class="quick-action-btn" href="#settings" onclick="showSection('settings',null)">
+              <i class="ri-settings-3-line"></i><span>Settings</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <!-- Recent Registrations -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>New Registrations</h3>
+              <a class="card-action" href="#users" onclick="showSection('users',null)">See all &rarr;</a>
+            </div>
+            <div id="overviewRecentUsers"></div>
+          </div>
+          <!-- Recent Bookings -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Recent Bookings</h3>
+              <a class="card-action" href="#bookings" onclick="showSection('bookings',null)">See all &rarr;</a>
+            </div>
+            <div style="overflow-x:auto;"><table class="dash-table" id="overviewBookingsTable"></table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: USERS ======= -->
+      <section id="section-users" style="display:none;">
+        <div class="page-header">
+          <h2>User Management</h2>
+          <p>Manage all clients, photographers, and administrators on the platform</p>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);" id="userStats"></div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Users</h3>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;border-radius:var(--radius-sm);" onclick="resetUserForm();openModal('modalUser')">
+              <i class="ri-user-add-line"></i> Add User
+            </button>
+          </div>
+          <div class="filter-bar">
+            <input class="form-input" id="userSearch" placeholder="Search by name or email..." oninput="renderUsers()">
+            <select class="form-input" id="userRoleFilter" onchange="renderUsers()">
+              <option value="">All Roles</option>
+              <option value="CUSTOMER">CUSTOMER</option>
+              <option value="PHOTOGRAPHER">PHOTOGRAPHER</option>
+              <option value="ADMIN">ADMIN</option>
+            </select>
+            <select class="form-input" id="userStatusFilter" onchange="renderUsers()">
+              <option value="">All Status</option>
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="PENDING">PENDING</option>
+              <option value="SUSPENDED">SUSPENDED</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="usersTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: PHOTOGRAPHERS ======= -->
+      <section id="section-photographers" style="display:none;">
+        <div class="page-header">
+          <h2>Photographer Management</h2>
+          <p>Review, verify, and manage photographer profiles across Nepal</p>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);" id="photoStats"></div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>Photographer Directory</h3>
+          </div>
+          <div class="filter-bar">
+            <input class="form-input" id="photoSearch" placeholder="Search by name or location..." oninput="renderPhotographers()">
+            <select class="form-input" id="photoVerFilter" onchange="renderPhotographers()">
+              <option value="">All Status</option>
+              <option value="true">Verified</option>
+              <option value="false">Unverified</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="photographersTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: BOOKINGS ======= -->
+      <section id="section-bookings" style="display:none;">
+        <div class="page-header">
+          <h2>All Bookings</h2>
+          <p>Monitor and manage all platform bookings across Nepal</p>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);" id="bookingStats"></div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>Booking Log</h3></div>
+          <div class="filter-bar">
+            <input class="form-input" id="bookingSearch" placeholder="Search by client or photographer..." oninput="renderBookings()">
+            <select class="form-input" id="bookingStatusFilter" onchange="renderBookings()">
+              <option value="">All Status</option>
+              <option value="PENDING">PENDING</option>
+              <option value="CONFIRMED">CONFIRMED</option>
+              <option value="COMPLETED">COMPLETED</option>
+              <option value="CANCELLED">CANCELLED</option>
+              <option value="DECLINED">DECLINED</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="bookingsTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: REVIEWS ======= -->
+      <section id="section-reviews" style="display:none;">
+        <div class="page-header">
+          <h2>Reviews</h2>
+          <p>Moderate all customer reviews across the platform</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header"><h3>All Reviews</h3></div>
+          <div class="filter-bar">
+            <input class="form-input" id="reviewSearch" placeholder="Search by customer or photographer..." oninput="renderReviews()">
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="reviewsTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: NOTICES ======= -->
+      <section id="section-notices" style="display:none;">
+        <div class="page-header">
+          <h2>Notices</h2>
+          <p>Post and manage platform-wide announcements</p>
+        </div>
+        <div class="dash-card">
+          <div class="dash-card-header">
+            <h3>All Notices</h3>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:.82rem;border-radius:var(--radius-sm);" onclick="openModal('modalNotice');document.getElementById('nTitle').value='';document.getElementById('nMessage').value='';document.getElementById('nTarget').value='ALL';">
+              <i class="ri-add-line"></i> New Notice
+            </button>
+          </div>
+          <div style="overflow-x:auto;"><table class="dash-table" id="noticesTable"></table></div>
+        </div>
+      </section>
+
+      <!-- ======= SECTION: SETTINGS ======= -->
+      <section id="section-settings" style="display:none;">
+        <div class="page-header">
+          <h2>Settings</h2>
+          <p>Manage platform configuration and admin preferences</p>
+        </div>
+        <div class="dash-card" style="max-width:540px;margin-bottom:20px;">
+          <div class="dash-card-header"><h3>General Settings</h3></div>
+          <div style="display:grid;gap:20px;">
+            <div class="form-group"><label class="form-label">Platform Name</label><input type="text" class="form-input" value="ECO SNAP"></div>
+            <div class="form-group"><label class="form-label">Headquarters</label><input type="text" class="form-input" value="Kathmandu, Nepal"></div>
+            <div class="form-group"><label class="form-label">Support Email</label><input type="email" class="form-input" value="support@ecosnap.com"></div>
+            <div class="form-group"><label class="form-label">Currency</label><input type="text" class="form-input" value="NPR (Nepalese Rupee — Rs.)" readonly></div>
+            <div class="form-group"><label class="form-label">Platform Commission (%)</label><input type="number" class="form-input" value="10"></div>
+            <div class="form-group"><label class="form-label">Payment Gateway</label>
+              <select class="form-input">
+                <option selected>eSewa</option><option>Khalti</option><option>ConnectIPS</option><option>Bank Transfer</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="showToast('Settings saved successfully.','success')">Save Changes</button>
+          </div>
+        </div>
+        <div class="dash-card" style="max-width:540px;">
+          <div class="dash-card-header"><h3>Change Password</h3></div>
+          <div style="display:grid;gap:16px;">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" id="settingsPwdCurrent"></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" id="settingsPwdNew"></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" class="form-input" id="settingsPwdConfirm"></div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="changePasswordSettings()">Update Password</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- JavaScript -->
+<script src="../assets/js/session.js"></script>
+<script src="../assets/js/ui.js"></script>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/dashboard-admin.js"></script>
+</body>
+</html>

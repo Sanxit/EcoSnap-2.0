@@ -1,0 +1,385 @@
+/* EcoSnap — About Page Styles */
+
+/* ============================================
+   1. ABOUT HERO
+   ============================================ */
+.about-hero {
+  padding-top: 160px;
+  padding-bottom: 80px;
+  background: var(--primary-white);
+}
+
+.about-hero .eco-container {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.about-hero-text {
+  flex: 1;
+}
+
+.about-hero-text h1 {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: var(--primary-black);
+}
+
+.about-hero-text p {
+  font-size: 18px;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+
+.about-hero-img {
+  flex: 1;
+}
+
+.about-hero-img img {
+  width: 100%;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   2. MISSION & VISION
+   ============================================ */
+.mission-vision {
+  padding: 60px 0 100px;
+  background: var(--gray-50);
+}
+
+.mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.mv-card {
+  background: var(--primary-white);
+  padding: 50px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  transition: all var(--transition-base);
+}
+
+.mv-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+}
+
+.mv-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary-accent);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.mv-card h3 {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+
+.mv-card p {
+  font-size: 16px;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+
+/* ============================================
+   3. CORE VALUES
+   ============================================ */
+.core-values {
+  padding: 100px 0;
+  background: var(--primary-white);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.value-card {
+  text-align: center;
+  padding: 50px 30px;
+  background: var(--primary-white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+}
+
+.value-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+  transform: translateY(-5px);
+}
+
+.value-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--primary-accent);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 24px;
+}
+
+.value-card h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.value-card p {
+  font-size: 15px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* ============================================
+   4. TEAM SECTION
+   ============================================ */
+.team-section {
+  padding: 100px 0;
+  background: var(--gray-50);
+}
+
+.team-section .section-header {
+  margin-bottom: 60px;
+}
+
+.team-section .photographers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.team-section .photographer-card {
+  background: var(--primary-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-base);
+}
+
+.team-section .photographer-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+}
+
+.team-section .card-cover {
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.team-section .card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+.team-section .photographer-card:hover .card-cover img {
+  transform: scale(1.05);
+}
+
+.team-section .card-body {
+  text-align: center;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.team-section .card-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-black);
+  margin-bottom: 6px;
+}
+
+.team-role {
+  font-size: 14px;
+  color: var(--primary-color);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ============================================
+   5. CTA BANNER
+   ============================================ */
+.cta-section {
+  padding: 100px 0;
+}
+
+.cta-banner {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 60%, #004d25 100%);
+  border-radius: var(--radius-xl);
+  padding: 80px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.cta-banner::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cta-banner::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.cta-content {
+  max-width: 560px;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-content h2 {
+  font-size: 44px;
+  font-weight: 800;
+  color: var(--primary-white);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.cta-content p {
+  font-family: var(--font-description);
+  letter-spacing: 0.2px;
+  font-size: 21px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 36px;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cta-image {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.cta-image img {
+  width: 320px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  transform: rotate(3deg);
+  transition: transform var(--transition-base);
+}
+
+.cta-image img:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media only screen and (max-width: 1024px) {
+  .about-hero .eco-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .team-section .photographers-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cta-banner {
+    padding: 60px 48px;
+  }
+
+  .cta-content h2 {
+    font-size: 36px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .mv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .team-section .photographers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (max-width: 776px) {
+  .cta-banner {
+    flex-direction: column;
+    padding: 48px 28px;
+    text-align: center;
+  }
+
+  .cta-content h2 {
+    font-size: 30px;
+  }
+
+  .cta-buttons {
+    justify-content: center;
+  }
+
+  .cta-image {
+    display: none;
+  }
+
+  .cta-section {
+    padding: 60px 0;
+  }
+}
