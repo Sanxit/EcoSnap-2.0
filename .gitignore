@@ -1,35 +1,81 @@
+# ==============================
+# Environment & Secrets
+# ==============================
 .env
 .env.*
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!.env.example
 
-### STS ###
-.apt_generated
+# ==============================
+# Maven & Kilo
+# ==============================
+target/
+.mvn/wrapper/*
+.kilo/
+
+# ==============================
+# Java
+# ==============================
+*.class
+*.log
+hs_err_pid*
+
+# ==============================
+# Spring Boot
+# ==============================
+spring-boot-starter.log
+
+# ==============================
+# Eclipse / STS
+# ==============================
 .classpath
-.factorypath
 .project
-.settings
+.settings/
+.factorypath
 .springBeans
 .sts4-cache
+.apt_generated/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# ==============================
+# IntelliJ IDEA
+# ==============================
+.idea/
 *.iml
+*.iws
 *.ipr
+out/
 
-### NetBeans ###
+# ==============================
+# NetBeans
+# ==============================
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# ==============================
+# VS Code
+# ==============================
 .vscode/
+
+# ==============================
+# OS Generated Files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Temporary / Backup Files
+# ==============================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+
+# ==============================
+# Build Output
+# ==============================
+build/
