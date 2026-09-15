@@ -1,5 +1,5 @@
 <p align="center">
-  <img align="center" src="./src/main/resources/static/images/ecosnap-logo.png" width="180">
+  <img align="center" src=".\src\main\resources\static\assets\img\logo.png" width="180">
 </p>
 
 <h1 align="center">EcoSnap</h1>
