@@ -159,8 +159,8 @@
       <div class="sidebar-user">
         <div class="user-avatar" id="sidebarAvatar">PS</div>
         <div class="sidebar-user-info">
-          <div class="user-name" id="sidebarName">Priya Sharma</div>
-          <div class="user-email" id="sidebarEmail">client@ecosnap.com</div>
+          <div class="user-name" id="sidebarName"></div>
+          <div class="user-email" id="sidebarEmail"></div>
         </div>
       </div>
       <button class="btn-logout" onclick="EcoSnapSession.logout()">
@@ -298,21 +298,21 @@
           <div style="display:flex;align-items:center;gap:18px;margin-bottom:28px;">
             <div style="width:72px;height:72px;border-radius:50%;background:var(--primary-color);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;" id="profileInitials">PS</div>
             <div>
-              <div style="font-weight:700;font-size:1.1rem;" id="profileName">Priya Sharma</div>
-              <div style="font-size:.85rem;color:var(--gray-500);" id="profileEmail">client@ecosnap.com</div>
+          <div style="font-weight:700;font-size:1.1rem;" id="profileName"></div>
+          <div style="font-size:.85rem;color:var(--gray-500);" id="profileEmail"></div>
               <div style="margin-top:6px;"><span class="status-badge active">Active Client</span></div>
             </div>
           </div>
           <div style="display:grid;gap:16px;">
             <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="profileNameInput" value="Priya Sharma"></div>
-            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" value="client@ecosnap.com"></div>
-            <div class="form-group"><label class="form-label">Phone (Nepal)</label><input type="tel" class="form-input" value="+977 98XXXXXXXX"></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="profileEmailInput"></div>
+            <div class="form-group"><label class="form-label">Phone (Nepal)</label><input type="tel" class="form-input" id="profilePhone" value="+977 98XXXXXXXX"></div>
             <div class="form-group"><label class="form-label">City</label>
               <select class="form-input">
                 <option selected>Kathmandu</option><option>Lalitpur</option><option>Bhaktapur</option><option>Pokhara</option><option>Chitwan</option><option>Other</option>
               </select>
             </div>
-            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="showToast('Profile saved successfully.','success')">Save Changes</button>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="saveProfile()">Save Changes</button>
           </div>
         </div>
         <div class="dash-card" style="max-width:540px;">

@@ -204,12 +204,17 @@
       }
     },
 
-    /**
-     * Retrieves authentication token from localStorage
-     * @returns {string}
-     */
+    getPathContext: function () {
+      return getPathContext();
+    },
+
+/**
+   * Retrieves authentication token from localStorage (legacy fallback only).
+   * The real session is cookie-based; this exists only for backwards compat.
+   * @returns {string}
+   */
     getToken: function () {
-      return localStorage.getItem('ecosnap_token') || sessionStorage.getItem('ecosnap_token') || '';
+      return localStorage.getItem('ecosnap_token') || '';
     },
 
     /**
@@ -234,15 +239,22 @@
     },
 
     /**
-     * Clears all session storage and redirects to index.html
+     * Clears all session storage and redirects to index.html.
+     * Also fires a best-effort same-origin logout so the server invalidates the session.
      */
     logout: function () {
+      const ctx = getPathContext();
       localStorage.removeItem('ecosnap_user');
       localStorage.removeItem('ecosnap_token');
       sessionStorage.removeItem('ecosnap_user');
       sessionStorage.removeItem('ecosnap_token');
-      const ctx = getPathContext();
-      window.location.href = ctx.root + 'index.html';
+      if (window.EcoSnapAPI) {
+        EcoSnapAPI.logout().finally(function () {
+          window.location.href = ctx.root + 'index.html';
+        });
+      } else {
+        window.location.href = ctx.root + 'index.html';
+      }
     },
 
     /**
@@ -252,10 +264,10 @@
      * @param {Array<string>} [allowedRoles]
      * @returns {Object|null}
      */
-    requireAuth: function (allowedRoles) {
-      const user = EcoSnapSession.getUser();
+    requireAuth: async function (allowedRoles) {
       const ctx = getPathContext();
       const loginUrl = ctx.pages ? ctx.pages + 'login.html' : 'login.html';
+      const user = await EcoSnapSession.refreshUser();
 
       if (!user) {
         window.location.href = loginUrl;
@@ -416,6 +428,49 @@
         const prefix = user.role === 'PHOTOGRAPHER' ? 'Good morning' : 'Welcome back';
         topbarSub.textContent = `${prefix}, ${firstName}`;
       }
+    },
+
+    /**
+     * Refreshes the cached user from the server session (/api/auth/me) and updates
+     * the in-memory user object used by applyToUI / applyNavbarAuth.
+     * Returns the refreshed user or null if not authenticated.
+     */
+    refreshUser: async function () {
+      if (!window.EcoSnapAPI) return EcoSnapSession.getUser();
+      try {
+        const me = await EcoSnapAPI.me();
+        if (me && me.user) {
+          const u = me.user;
+          const sessionUser = {
+            id: u.id,
+            fullName: u.fullName || '',
+            name: u.fullName || '',
+            email: u.email || '',
+            role: (u.role || '').toUpperCase(),
+            phoneNumber: u.phoneNumber || '',
+            imageUrl: (u.profile && u.profile.avatarUrl) || '',
+            profile: u.profile || null
+          };
+          if (sessionUser.role === 'CLIENT') sessionUser.role = 'CUSTOMER';
+          localStorage.setItem('ecosnap_user', JSON.stringify(sessionUser));
+          // Capture Bearer token if the server returns one in the /me response
+          if (me.token && window.EcoSnapAPI) {
+            EcoSnapAPI.setToken(me.token);
+          }
+          return sessionUser;
+        }
+        // Not authenticated -> clear any stale local user
+        localStorage.removeItem('ecosnap_user');
+        EcoSnapAPI.clearToken && EcoSnapAPI.clearToken();
+        return null;
+      } catch (e) {
+        localStorage.removeItem('ecosnap_user');
+        localStorage.removeItem('ecosnap_token');
+        sessionStorage.removeItem('ecosnap_user');
+        sessionStorage.removeItem('ecosnap_token');
+        if (window.EcoSnapAPI && EcoSnapAPI.clearToken) EcoSnapAPI.clearToken();
+        return null;
+      }
     }
   };
 
@@ -452,59 +507,6 @@
     }
   });
 
-  /**
-   * Demo Seed Helper
-   * seedDemoUser('ADMIN' | 'CUSTOMER' | 'PHOTOGRAPHER')
-   */
-  window.seedDemoUser = function (role) {
-    const norm = (role || 'CUSTOMER').toUpperCase();
-    const demoAccounts = {
-      ADMIN: {
-        id: 'admin-001',
-        fullName: 'Anil Maharjan',
-        email: 'admin@ecosnap.com',
-        role: 'ADMIN',
-        imageUrl: ''
-      },
-      CUSTOMER: {
-        id: 'client-001',
-        fullName: 'Priya Sharma',
-        email: 'client@ecosnap.com',
-        role: 'CUSTOMER',
-        imageUrl: ''
-      },
-      PHOTOGRAPHER: {
-        id: 'photo-001',
-        fullName: 'Sangeeta Shrestha',
-        email: 'photo@ecosnap.com',
-        role: 'PHOTOGRAPHER',
-        imageUrl: ''
-      }
-    };
-
-    const targetUser = demoAccounts[norm] || demoAccounts.CUSTOMER;
-    localStorage.setItem('ecosnap_token', 'demo-token-' + Date.now());
-    localStorage.setItem('ecosnap_user', JSON.stringify(targetUser));
-    sessionStorage.setItem('ecosnap_token', 'demo-token-' + Date.now());
-    sessionStorage.setItem('ecosnap_user', JSON.stringify(targetUser));
-
-    EcoSnapSession.applyNavbarAuth();
-    EcoSnapSession.applyToUI(targetUser);
-
-    return targetUser;
-  };
-
-  // Auto-seed via ?demo= query parameter if present
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const demoRole = params.get('demo');
-    if (demoRole) {
-      window.seedDemoUser(demoRole);
-    }
-  } catch (err) {
-    // Ignore URL parse errors in older environments
-  }
-
   // Auto-apply on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
@@ -516,4 +518,13 @@
 
   // Export globally
   window.EcoSnapSession = EcoSnapSession;
+
+  // Restore Bearer token into EcoSnapAPI if it was loaded before this script.
+  // (api.js also does this on its own init — this is a belt-and-suspenders guard.)
+  if (window.EcoSnapAPI) {
+    try {
+      const t = localStorage.getItem('ecosnap_token');
+      if (t) EcoSnapAPI.setToken(t);
+    } catch (e) { /* ignore */ }
+  }
 })();

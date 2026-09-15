@@ -38,7 +38,7 @@
     <div class="modal-header"><h3 id="modalPortfolioTitle">Upload Image</h3><button class="modal-close" onclick="closeModal('modalPortfolio')">&times;</button></div>
     <div class="modal-body">
       <input type="hidden" id="pfId">
-      <div class="form-group"><label class="form-label">Image File (demo — file not stored)</label><input class="form-input" id="pfFile" type="file" accept="image/*"></div>
+      <div class="form-group"><label class="form-label">Image URL (or leave blank for curated photo)</label><input class="form-input" id="pfImageUrl" placeholder="https://images.unsplash.com/photo-..."></div>
       <div class="form-group"><label class="form-label">Caption *</label><input class="form-input" id="pfCaption" placeholder="Describe this photo..."></div>
       <div class="form-group"><label class="form-label">Category</label>
         <select class="form-input" id="pfCategory">
@@ -190,8 +190,8 @@
       <div class="sidebar-user">
         <div class="user-avatar" id="sidebarAvatar">SS</div>
         <div class="sidebar-user-info">
-          <div class="user-name" id="sidebarName">Sangeeta Shrestha</div>
-          <div class="user-email" id="sidebarEmail">photo@ecosnap.com</div>
+          <div class="user-name" id="sidebarName"></div>
+          <div class="user-email" id="sidebarEmail"></div>
         </div>
       </div>
       <button class="btn-logout" onclick="EcoSnapSession.logout()">
@@ -264,17 +264,18 @@
             </div>
           </div>
           <div style="display:grid;gap:16px;">
-            <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" value="Sangeeta Shrestha"></div>
-            <div class="form-group"><label class="form-label">Bio</label><textarea rows="3" class="form-input" style="resize:vertical;">Award-winning wedding and events photographer based in Kathmandu, Nepal. Specializing in candid, documentary-style coverage that captures the essence of your special moments. 10+ years of experience.</textarea></div>
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-input" id="pName" value="Sangeeta Shrestha"></div>
+            <div class="form-group"><label class="form-label">Bio</label><textarea rows="3" class="form-input" style="resize:vertical;" id="pBio">Award-winning wedding and events photographer based in Kathmandu, Nepal. Specializing in candid, documentary-style coverage that captures the essence of your special moments. 10+ years of experience.</textarea></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="form-group"><label class="form-label">Specialization</label><input type="text" class="form-input" value="WEDDING, PORTRAIT, CORPORATE"></div>
-              <div class="form-group"><label class="form-label">Experience (Years)</label><input type="number" class="form-input" value="10"></div>
+              <div class="form-group"><label class="form-label">Specialization</label><input type="text" class="form-input" id="pSpec" value="WEDDING, PORTRAIT, CORPORATE"></div>
+              <div class="form-group"><label class="form-label">Experience (Years)</label><input type="number" class="form-input" id="pExp" value="10"></div>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-              <div class="form-group"><label class="form-label">Base Rate (Rs./hr)</label><input type="number" class="form-input" value="5000"></div>
-              <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" value="Kathmandu, Nepal"></div>
+              <div class="form-group"><label class="form-label">Base Rate (Rs./hr)</label><input type="number" class="form-input" id="pRate" value="5000"></div>
+              <div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" id="pLoc" value="Kathmandu, Nepal"></div>
             </div>
-            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="showToast('Profile saved successfully.','success')">Save Changes</button>
+            <div class="form-group"><label class="form-label">Response Time (Hours)</label><input type="number" class="form-input" id="pResp" value="24"></div>
+            <button class="btn btn-primary" style="width:fit-content;padding:10px 24px;border-radius:var(--radius-sm);" onclick="saveProfile()">Save Changes</button>
           </div>
         </div>
         <div class="dash-card" style="max-width:580px;">

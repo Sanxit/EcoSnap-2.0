@@ -1,13 +1,9 @@
-FROM eclipse-temurin:17-jdk
-
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y maven
-
 COPY . .
-
-RUN mvn clean package -DskipTests
-
-EXPOSE 9090
-
-CMD ["sh", "-c", "java -jar target/*.jar"]
+RUN chmod +x mvnw && ./mvnw -B -DskipTests package
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8090
+CMD ["java", "-jar", "app.jar"]

@@ -261,8 +261,7 @@
   box-sizing: border-box;
 }
 
-.prof-cta-btns .btn-book-now,
-.prof-cta-btns .btn-message {
+.prof-cta-btns .btn-book-now {
   flex: 1 1 0;
   min-width: 0;
   height: 44px;
@@ -295,22 +294,6 @@
 .btn-book-now:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(0, 146, 69, 0.45);
-}
-
-.btn-message {
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: white;
-  font-weight: 600;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
-}
-
-.btn-message:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: rgba(255,255,255,0.4);
-  transform: translateY(-2px);
 }
 
 .btn-save {
@@ -1841,8 +1824,7 @@
     gap: 8px;
   }
 
-  .prof-cta-btns .btn-book-now,
-  .prof-cta-btns .btn-message {
+  .prof-cta-btns .btn-book-now {
     padding: 0 10px;
     font-size: 13.5px;
     gap: 6px;
@@ -1887,8 +1869,7 @@
     gap: 7px;
   }
 
-  .prof-cta-btns .btn-book-now,
-  .prof-cta-btns .btn-message {
+  .prof-cta-btns .btn-book-now {
     height: 42px;
     min-height: 42px;
     padding: 0 8px;
@@ -1939,8 +1920,7 @@
     gap: 6px;
   }
 
-  .prof-cta-btns .btn-book-now,
-  .prof-cta-btns .btn-message {
+  .prof-cta-btns .btn-book-now {
     height: 40px;
     min-height: 40px;
     padding: 0 5px;
@@ -1949,8 +1929,7 @@
     letter-spacing: 0;
   }
 
-  .prof-cta-btns .btn-book-now i,
-  .prof-cta-btns .btn-message i {
+  .prof-cta-btns .btn-book-now i {
     font-size: 14px;
   }
 

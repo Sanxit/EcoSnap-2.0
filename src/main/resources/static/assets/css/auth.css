@@ -601,48 +601,6 @@ body.page-exit .signup-collage-layout {
   box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
 }
 
-.btn-google-login {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  padding: 11px 16px;
-  font-family: 'Newsreader', serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.btn-google-login:hover:not(:disabled) {
-  background-color: #f9fafb;
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-}
-
-.btn-google-login:active:not(:disabled) {
-  transform: scale(0.99);
-}
-
-.btn-google-login:disabled,
-.btn-google-login[disabled] {
-  opacity: 0.72;
-  cursor: not-allowed;
-  box-shadow: none;
-  pointer-events: none;
-}
-
-.btn-google-login svg {
-  flex-shrink: 0;
-}
-
 .min-auth-divider {
   position: relative;
   text-align: center;
@@ -863,111 +821,6 @@ body.page-exit .signup-collage-layout {
 
 .min-auth-error.visible {
   display: block;
-}
-
-.min-demo-helper {
-  margin-top: 8px;
-  border-top: 1px solid #f3f4f6;
-  padding-top: 16px;
-  text-align: center;
-}
-
-.min-demo-btn {
-  background: none;
-  border: none;
-  color: #9ca3af;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.min-demo-btn:hover {
-  color: #374151;
-  background-color: #f3f4f6;
-}
-
-.min-demo-chevron {
-  transition: transform 0.25s ease;
-}
-
-.min-demo-helper.open .min-demo-chevron {
-  transform: rotate(180deg);
-}
-
-.min-demo-drawer {
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 10px;
-  text-align: left;
-}
-
-.min-demo-helper.open .min-demo-drawer {
-  display: flex;
-}
-
-.min-demo-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  font-size: 12px;
-}
-
-.min-demo-card:hover {
-  background: #f3f4f6;
-  border-color: #d1d5db;
-  transform: translateX(2px);
-}
-
-.min-demo-role {
-  font-weight: 600;
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 3px;
-}
-
-.role-client {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-.role-photo {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.role-admin {
-  background: #f3f4f6;
-  color: #1f2937;
-}
-
-.min-demo-email {
-  color: #4b5563;
-  font-size: 11.5px;
-}
-
-.min-demo-use {
-  color: #6b7280;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-.min-demo-card:hover .min-demo-use {
-  color: #111827;
 }
 
 .min-auth-footer {
@@ -1509,12 +1362,6 @@ body.page-exit .signup-collage-layout {
   font-size: 12.5px;
   color: #6b7280;
   font-weight: 400;
-}
-
-.btn-google-login.btn-signup-google:hover:not([disabled]) {
-  background-color: #f0fdf4;
-  border-color: #009245;
-  box-shadow: 0 2px 8px rgba(0, 146, 69, 0.12);
 }
 
 .signup-footer-switch {

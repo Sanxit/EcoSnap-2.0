@@ -109,13 +109,109 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSliderTrack();
   }
 
-  // ============================================
-  // 4. REAL-TIME FILTERING ENGINE
-  // ============================================
+// ============================================
+// 4. REAL-TIME FILTERING ENGINE
+// ============================================
   const cardsGrid = document.getElementById("pgCardsGrid");
   const resultCount = document.getElementById("resultCount");
   const emptyState = document.getElementById("pgEmptyState");
   const allCards = Array.from(document.querySelectorAll(".pg-card[data-profile-id]"));
+  let backendCards = []; // cards rendered from the backend
+
+  // Normalize a backend photographer record into a card-like object with the
+  // same data-* attributes used by the filter/sort engine.
+  function toCardData(p) {
+    const specs = (p.specialization || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    const loc = (p.location || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const price = Number(p.packages && p.packages.length
+      ? p.packages[0].price
+      : (p.hourlyRate || 0));
+    return {
+      id: p.id,
+      name: p.ownerName || 'Photographer',
+      specs: specs,
+      loc: loc,
+      price: price,
+      rating: String(p.rating || 0),
+      cover: p.coverImageUrl || p.avatarUrl || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E',
+      avatar: p.avatarUrl || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E',
+      tags: specs.length ? specs : ['Photography'],
+      verified: p.verified === true
+    };
+  }
+
+  // Build a card element from backend data and append it to the grid.
+  function buildCardEl(card) {
+    const el = document.createElement('div');
+    el.className = 'pg-card reveal';
+    el.setAttribute('data-profile-id', String(card.id));
+    el.setAttribute('data-specialties', card.specs.join(','));
+    el.setAttribute('data-location', card.loc);
+    el.setAttribute('data-price', String(card.price));
+    el.setAttribute('data-rating', card.rating);
+    el.style.cursor = 'pointer';
+
+    const tagHtml = card.tags.map(t => `<span>${t}</span>`).join('');
+    const verifiedHtml = card.verified
+      ? '<div class="pg-card-verified"><i class="ri-verified-badge-fill"></i> Verified</div>'
+      : '';
+
+    el.innerHTML = `
+      <div class="pg-card-cover">
+        <img src="${card.cover}" alt="${card.name}" />
+        <div class="pg-card-rating-badge"><i class="ri-star-fill"></i> ${card.rating}</div>
+        ${verifiedHtml}
+      </div>
+      <div class="pg-card-body">
+        <img class="pg-card-avatar" src="${card.avatar}" alt="${card.name}" />
+        <div class="pg-card-info">
+          <h3 class="pg-card-name">${card.name}</h3>
+          <p class="pg-card-location"><i class="ri-map-pin-2-fill"></i> ${card.loc || 'Nepal'}</p>
+          <div class="pg-card-tags">${tagHtml}</div>
+        </div>
+      </div>
+      <div class="pg-card-footer">
+        <div class="pg-card-price">
+          <span class="price-from">Starting from</span>
+          <span class="price-amount">Rs. ${card.price.toLocaleString('en-IN')}</span>
+        </div>
+        <button class="btn-view-profile">View Profile</button>
+      </div>`;
+
+    el.addEventListener('click', () => {
+      window.location.href = `photographer-profile.html?id=${card.id}`;
+    });
+    return el;
+  }
+
+  function getActiveCards() {
+    return Array.from(cardsGrid ? cardsGrid.querySelectorAll(".pg-card[data-profile-id]") : []);
+  }
+
+  // Load photographers from the backend and replace static cards.
+  async function loadPhotographersFromBackend() {
+    if (!window.EcoSnapAPI) return;
+    try {
+      const list = await EcoSnapAPI.photographers();
+      if (!Array.isArray(list) || list.length === 0) return;
+      backendCards = list.map(toCardData);
+
+      // Replace static cards with backend-rendered cards.
+      getActiveCards().forEach(c => c.remove());
+      backendCards.forEach(card => {
+        const el = buildCardEl(card);
+        cardsGrid.appendChild(el);
+      });
+
+      // Update the hero count.
+      const heroCount = document.querySelector('.pg-title span');
+      if (heroCount) heroCount.textContent = String(backendCards.length);
+
+      filterPhotographers();
+    } catch (e) {
+      console.warn('Backend photographers fetch failed, using existing cards.', e);
+    }
+  }
 
   function filterPhotographers() {
     const selectedSpecs = Array.from(
@@ -129,8 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxPrice = priceSlider ? parseInt(priceSlider.value) : 60000;
 
     let visibleCount = 0;
+    const cards = getActiveCards();
 
-    allCards.forEach((card) => {
+    cards.forEach((card) => {
       const cardSpecs = (card.getAttribute("data-specialties") || "")
         .toLowerCase()
         .split(",")
@@ -156,14 +253,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (isMatch) {
         card.classList.remove("filtered-out");
+        card.style.display = "";
         visibleCount++;
       } else {
         card.classList.add("filtered-out");
+        card.style.display = "none";
       }
     });
 
     if (resultCount) {
-      resultCount.innerHTML = `Showing <strong>${visibleCount}</strong> of ${allCards.length} photographers`;
+      resultCount.innerHTML = `Showing <strong>${visibleCount}</strong> of ${cards.length} photographers`;
     }
 
     if (emptyState) {
@@ -264,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Profile card navigation
+  // Profile card navigation (works for both static and backend cards)
   document.querySelectorAll('.pg-card[data-profile-id]').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.getAttribute('data-profile-id');
@@ -272,5 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  filterPhotographers();
+  // Load backend photographers (async), then filter.
+  loadPhotographersFromBackend().finally(() => filterPhotographers());
 });

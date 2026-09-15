@@ -154,10 +154,6 @@
               <i class="ri-calendar-check-fill"></i>
               Book Now
             </button>
-            <button class="btn-message" id="btnMessage">
-              <i class="ri-message-3-fill"></i>
-              Message
-            </button>
             <button class="btn-save" id="btnSave" aria-label="Save photographer">
               <i class="ri-heart-line"></i>
             </button>
@@ -235,7 +231,7 @@
           request.</p>
       </div>
 
-      <div class="packages-grid">
+      <div class="packages-grid" id="profilePackagesGrid">
 
         <div class="pkg-card">
           <div class="pkg-card-header">
@@ -602,12 +598,12 @@
           <div class="form-field">
             <label for="bkgEventType">Event Type</label>
             <select id="bkgEventType">
-              <option value="wedding">Wedding Photography</option>
-              <option value="portrait">Portrait Session</option>
-              <option value="corporate">Corporate Event</option>
-              <option value="engagement">Engagement Shoot</option>
-              <option value="family">Family &amp; Maternity</option>
-              <option value="other">Other Occasion</option>
+              <option value="WEDDING">Wedding Photography</option>
+              <option value="PORTRAIT">Portrait Session</option>
+              <option value="CORPORATE">Corporate Event</option>
+              <option value="ENGAGEMENT">Engagement Shoot</option>
+              <option value="FAMILY">Family &amp; Maternity</option>
+              <option value="OTHER">Other Occasion</option>
             </select>
           </div>
           <div class="form-field">
@@ -617,19 +613,20 @@
           <div class="form-field">
             <label for="bkgTimeSlot">Time Slot</label>
             <select id="bkgTimeSlot">
-              <option value="morning">Morning (9:00 AM – 12:00 PM)</option>
-              <option value="afternoon">Afternoon (1:00 PM – 4:00 PM)</option>
-              <option value="golden-hour" selected>Golden Hour (4:30 PM – 7:00 PM)</option>
-              <option value="full-day">Full Day Coverage</option>
+              <option value="MORNING">Morning (9:00 AM – 12:00 PM)</option>
+              <option value="AFTERNOON">Afternoon (1:00 PM – 5:00 PM)</option>
+              <option value="EVENING" selected>Evening (5:00 PM – 8:00 PM)</option>
+              <option value="FULL_DAY">Full Day Coverage</option>
             </select>
           </div>
           <div class="form-field form-field-full">
-            <label for="bkgPackage">Package *</label>
-            <select id="bkgPackage" required>
-              <option value="">-- Select a package --</option>
-              <option value="essential">Essential -- Rs. 50,000</option>
-              <option value="premium">Premium -- Rs. 85,000</option>
-              <option value="elite">Elite -- Rs. 140,000</option>
+            <label for="bkgLocation">Event Location / Venue *</label>
+            <input type="text" id="bkgLocation" placeholder="e.g. Kathmandu, Hotel Yak &amp; Yeti" required />
+          </div>
+          <div class="form-field form-field-full">
+            <label for="bkgPackage">Package</label>
+            <select id="bkgPackage">
+              <option value="">-- No Package (Hourly Rate) --</option>
             </select>
           </div>
           <div class="form-field form-field-full">

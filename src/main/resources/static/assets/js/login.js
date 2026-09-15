@@ -1,43 +1,66 @@
-// Login page: form handler, demo drawer, password toggle, reset view, page transitions.
-// Depends on: assets/js/session.js, js/mock-data.js (loaded before this file).
+// Login page: real backend auth via /api/auth/login, forgot-password, role routing.
+// Depends on: assets/js/session.js, assets/js/api.js
 
-// Redirect if already authenticated
-var existingUser = getCurrentUser();
-if (existingUser) {
-  window.location.href = DASHBOARD_MAP[existingUser.role];
-}
-
-// Toggle collapsible demo accounts drawer
-function toggleDemoDrawer() {
-  var helper = document.getElementById('demoHelper');
-  if (helper) helper.classList.toggle('open');
-}
-
-// Google Sign-In Simulation with Mock Data
-function handleGoogleLogin() {
-  var result = loginUser('client@ecosnap.com', 'client123');
-  if (result.success) {
-    window.location.href = DASHBOARD_MAP[result.user.role];
+// Redirect if already authenticated (async check against the server session)
+async function maybeRedirectIfLoggedIn() {
+  if (!window.EcoSnapAPI) return;
+  // Restore Bearer token into the API client on page load (if a previous login saved one)
+  try {
+    const storedToken = localStorage.getItem('ecosnap_token');
+    if (storedToken) EcoSnapAPI.setToken(storedToken);
+  } catch (e) { /* ignore */ }
+  try {
+    const me = await EcoSnapAPI.me();
+    if (me && me.user) {
+      const role = (me.user.role || '').toUpperCase();
+      window.location.href = dashboardUrl(role);
+    } else {
+      clearCachedUser();
+    }
+  } catch (e) {
+    clearCachedUser();
   }
 }
+maybeRedirectIfLoggedIn();
 
-// Apply Demo Credentials to Login Form
-function applyDemo(email, password) {
-  var emailInput = document.getElementById('email');
-  var pwInput = document.getElementById('password');
-  emailInput.value = email;
-  pwInput.value = password;
+function clearCachedUser() {
+  localStorage.removeItem('ecosnap_user');
+  localStorage.removeItem('ecosnap_token');
+  sessionStorage.removeItem('ecosnap_user');
+  sessionStorage.removeItem('ecosnap_token');
+}
 
+function showPendingApproval() {
+  var pending = document.getElementById('pendingApproval');
   var error = document.getElementById('loginError');
+  if (pending) pending.classList.add('visible');
   if (error) error.classList.remove('visible');
+}
 
-  emailInput.focus();
+function hidePendingApproval() {
+  var pending = document.getElementById('pendingApproval');
+  if (pending) pending.classList.remove('visible');
+}
+
+var urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('registered') === 'pending') showPendingApproval();
+
+// Resolve the dashboard URL for a given role, accounting for pages/ context.
+function dashboardUrl(role) {
+  const ctx = (window.EcoSnapSession && typeof window.EcoSnapSession.getPathContext === 'function')
+    ? window.EcoSnapSession.getPathContext()
+    : { root: './', pages: 'pages/' };
+  const r = String(role || '').toUpperCase();
+  if (r === 'ADMIN') return ctx.pages + 'dashboard-admin.html';
+  if (r === 'PHOTOGRAPHER') return ctx.pages + 'dashboard-photographer.html';
+  return ctx.pages + 'dashboard-client.html';
 }
 
 // Password visibility toggle
 function togglePassword() {
   var pw = document.getElementById('password');
   var icon = document.getElementById('pwToggleIcon');
+  if (!pw || !icon) return;
   if (pw.type === 'password') {
     pw.type = 'text';
     icon.className = 'ri-eye-line';
@@ -53,7 +76,8 @@ function showResetView() {
   document.getElementById('resetCard').classList.remove('hidden');
   document.getElementById('resetSuccess').classList.remove('visible');
   document.getElementById('resetError').classList.remove('visible');
-  document.getElementById('resetEmail').focus();
+  var resetEmail = document.getElementById('resetEmail');
+  if (resetEmail) resetEmail.focus();
 }
 
 // Switch back to Login View
@@ -62,61 +86,115 @@ function showLoginView() {
   document.getElementById('loginCard').classList.remove('hidden');
 }
 
-// Reset Password Handler
-function handleResetPassword(e) {
+// Reset Password Handler -> /api/auth/forgot-password
+async function handleResetPassword(e) {
   e.preventDefault();
-  var email = document.getElementById('resetEmail').value.trim();
+  var email = (document.getElementById('resetEmail').value || '').trim();
   var btn = document.getElementById('resetSubmitBtn');
   var success = document.getElementById('resetSuccess');
   var error = document.getElementById('resetError');
 
   if (!email) {
-    if (error) error.classList.add('visible');
+    if (error) { error.textContent = 'Please enter a valid email address.'; error.classList.add('visible'); }
     return;
   }
 
   if (error) error.classList.remove('visible');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="ri-loader-4-line spin"></i> SENDING...';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ri-loader-4-line spin"></i> SENDING...';
+  }
 
-  setTimeout(function () {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ri-checkbox-circle-line"></i> SENT!';
-    btn.style.backgroundColor = '#10b981';
+  try {
+    await EcoSnapAPI.forgotPassword({ email: email });
+    if (btn) {
+      btn.innerHTML = '<i class="ri-checkbox-circle-line"></i> SENT!';
+      btn.style.backgroundColor = '#10b981';
+    }
     if (success) success.classList.add('visible');
-
     setTimeout(function () {
-      btn.innerHTML = 'RESET PASSWORD';
-      btn.style.backgroundColor = '';
+      if (btn) {
+        btn.innerHTML = 'RESET PASSWORD';
+        btn.style.backgroundColor = '';
+        btn.disabled = false;
+      }
     }, 3000);
-  }, 700);
+  } catch (err) {
+    if (error) { error.textContent = (err.message || 'Could not send reset link.'); error.classList.add('visible'); }
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = 'RESET PASSWORD';
+    }
+  }
 }
 
-// Main Login Handler
-function handleLogin(e) {
+// Main Login Handler -> /api/auth/login
+async function handleLogin(e) {
   e.preventDefault();
-  var email = document.getElementById('email').value.trim();
-  var password = document.getElementById('password').value;
+  var email = (document.getElementById('email').value || '').trim();
+  var password = document.getElementById('password').value || '';
   var btn = document.getElementById('submitBtn');
   var error = document.getElementById('loginError');
 
-  btn.disabled = true;
-  btn.innerHTML = '<i class="ri-loader-4-line spin"></i> LOGGING IN...';
+  if (!email || !password) {
+    if (error) { error.textContent = 'Email and password are required.'; error.classList.add('visible'); }
+    return;
+  }
 
-  setTimeout(function () {
-    var result = loginUser(email, password);
-    if (result.success) {
-      btn.innerHTML = '<i class="ri-checkbox-circle-line"></i> SUCCESS!';
-      btn.style.backgroundColor = '#10b981';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ri-loader-4-line spin"></i> LOGGING IN...';
+  }
+
+  try {
+    const res = await EcoSnapAPI.login({ email: email, password: password });
+    const user = res && res.user;
+    if (user && String(user.status || '').toUpperCase() === 'ACTIVE') {
+      const role = (user.role || '').toUpperCase();
+      hidePendingApproval();
+      if (error) error.classList.remove('visible');
+      // Store Bearer token if the server returns one (future-proof; session cookie is still primary auth)
+      if (res && res.token && window.EcoSnapAPI) {
+        EcoSnapAPI.setToken(res.token);
+      }
+      // Cache user for UI helpers (no token stored beyond above).
+      if (window.EcoSnapSession) {
+        const sessionUser = {
+          id: user.id,
+          fullName: user.fullName || '',
+          name: user.fullName || '',
+          email: user.email || '',
+          role: role,
+          phoneNumber: user.phoneNumber || '',
+          imageUrl: (user.profile && user.profile.avatarUrl) || ''
+        };
+        localStorage.setItem('ecosnap_user', JSON.stringify(sessionUser));
+        EcoSnapSession.applyNavbarAuth();
+        EcoSnapSession.applyToUI(sessionUser);
+      }
+      if (btn) {
+        btn.innerHTML = '<i class="ri-checkbox-circle-line"></i> SUCCESS!';
+        btn.style.backgroundColor = '#10b981';
+      }
       setTimeout(function () {
-        window.location.href = DASHBOARD_MAP[result.user.role];
+        window.location.href = dashboardUrl(role);
       }, 500);
     } else {
-      if (error) error.classList.add('visible');
+      throw new Error('Invalid email or password.');
+    }
+  } catch (err) {
+    if (err && err.status === 403 && /pending approval/i.test(err.message || '')) {
+      showPendingApproval();
+    } else {
+      hidePendingApproval();
+      if (error) { error.textContent = (err.message || 'Invalid email or password.'); error.classList.add('visible'); }
+    }
+    clearCachedUser();
+    if (btn) {
       btn.disabled = false;
       btn.innerHTML = 'LOG IN';
     }
-  }, 700);
+  }
 }
 
 // Page transition on navigation
