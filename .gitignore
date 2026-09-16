@@ -9,7 +9,9 @@
 # Maven & Kilo
 # ==============================
 target/
-.mvn/wrapper/*
+# Maven Wrapper files MUST be committed (mvnw/mvnw.cmd require them).
+# Only the downloaded distribution cache is ignored (legacy wrapper locations).
+.mvn/wrapper/dists/
 .kilo/
 
 # ==============================
