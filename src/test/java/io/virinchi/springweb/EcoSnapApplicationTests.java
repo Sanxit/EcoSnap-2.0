@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @SpringBootTest
-class SpringWebApplicationTests {
+class EcoSnapApplicationTests {
     @Autowired
     private WebApplicationContext context;
 
