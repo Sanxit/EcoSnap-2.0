@@ -84,6 +84,8 @@ public class DatabaseSeeder implements CommandLineRunner {
                 List<Notification> notifs = notificationRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
                 notificationRepository.deleteAll(notifs);
 
+                passwordResetTokenRepository.deleteByUserId(user.getId());
+
                 // If user is a customer, remove customer reviews & bookings
                 List<Review> customerReviews = reviewRepository.findByCustomerIdOrderByCreatedAtDesc(user.getId());
                 reviewRepository.deleteAll(customerReviews);
