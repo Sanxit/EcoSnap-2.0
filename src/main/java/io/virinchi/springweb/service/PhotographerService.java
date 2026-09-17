@@ -125,6 +125,10 @@ public class PhotographerService {
         profile.setAvatarUrl(blankToNull(request.avatarUrl()));
         profile.setCoverImageUrl(blankToNull(request.coverImageUrl()));
         profile.setResponseHours(request.responseHours() == null ? profile.getResponseHours() : request.responseHours());
+        User user = profile.getUser();
+        if (user != null && request.fullName() != null && !request.fullName().isBlank()) {
+            user.setFullName(request.fullName().trim());
+        }
         profileRepository.save(profile);
         return toOwnResponse(profile);
     }

@@ -27,6 +27,7 @@ public final class ApiDtos {
     }
 
     public record PhotographerProfileRequest(
+            String fullName,
             String bio,
             @NotBlank String specialization,
             @NotBlank String location,

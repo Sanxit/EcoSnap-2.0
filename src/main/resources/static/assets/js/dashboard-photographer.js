@@ -35,8 +35,20 @@ async function loadAuth() {
         imageUrl: (u.profile && u.profile.avatarUrl) || '',
         profile: u.profile || null
       };
-      if (currentUser.role === 'CLIENT') currentUser.role = 'CUSTOMER';
+      if (currentUser.role !== 'PHOTOGRAPHER') {
+        const ctx = (window.EcoSnapSession && typeof window.EcoSnapSession.getPathContext === 'function')
+          ? window.EcoSnapSession.getPathContext()
+          : { root: './', pages: 'pages/' };
+        if (currentUser.role === 'ADMIN') {
+          window.location.href = ctx.pages + 'dashboard-admin.html';
+        } else {
+          window.location.href = ctx.pages + 'dashboard-client.html';
+        }
+        return null;
+      }
       localStorage.setItem('ecosnap_user', JSON.stringify(currentUser));
+      updateSidebarAvatar(currentUser.imageUrl);
+      updateTopbarAvatar(currentUser.imageUrl);
       if (window.EcoSnapSession) {
         EcoSnapSession.applyNavbarAuth();
         EcoSnapSession.applyToUI(currentUser);
@@ -271,6 +283,7 @@ if (me) {
     renderReviews();
     renderNotifications();
     renderProfile();
+    setupAvatarFileUpload();
   } catch (e) {
     console.warn('Backend data load failed', e);
   }
@@ -935,13 +948,63 @@ function renderProfile(){
   set('pLoc', profile.location);
   set('pBio', profile.bio);
   set('pResp', profile.responseHours);
-  setHtml('pInitials', initials(profile.ownerName || (currentUser ? currentUser.fullName : '')));
-  setHtml('pAvatar', (profile.avatarUrl ? `<img src="${profile.avatarUrl}" alt="avatar" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);">` : `<div class="avatar" style="width:64px;height:64px;font-size:1.5rem;background:var(--primary-color);color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%;">${initials(profile.ownerName||'')}</div>`));
+  set('pAvatar', profile.avatarUrl || '');
+  if (currentUser) currentUser.imageUrl = profile.avatarUrl || '';
+  setHtml('profileName', profile.ownerName || (currentUser ? currentUser.fullName : ''));
+  setHtml('profileInitials', initials(profile.ownerName || (currentUser ? currentUser.fullName : '')));
+  setHtml('profileAvatarPreview', profile.avatarUrl
+    ? `<img src="${profile.avatarUrl}" alt="avatar preview" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);margin-top:8px;" loading="lazy" />`
+    : '');
   setHtml('pCover', profile.coverImageUrl ? `<img src="${profile.coverImageUrl}" alt="cover" style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius-sm);">` : `<div style="width:100%;height:180px;background:linear-gradient(135deg,var(--primary-color),var(--primary-dark));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">${profile.ownerName||'Photographer'}</div>`);
+  updateSidebarAvatar(profile.avatarUrl || '');
+  updateTopbarAvatar(profile.avatarUrl || '');
+  updateAvatarPreview();
+}
+
+function updateAvatarPreview() {
+  const preview = document.getElementById('avatarPreview');
+  const fileInput = document.getElementById('pAvatarFile');
+  if (!preview || !fileInput) return;
+  if (fileInput.files && fileInput.files[0]) {
+    const url = URL.createObjectURL(fileInput.files[0]);
+    preview.innerHTML = `<img src="${url}" alt="local avatar preview" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);margin-top:8px;" loading="lazy" />`;
+  }
+}
+
+function setupAvatarFileUpload() {
+  const fileInput = document.getElementById('pAvatarFile');
+  if (!fileInput) return;
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    updateAvatarPreview();
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const avatarInput = document.getElementById('pAvatar');
+      if (avatarInput) avatarInput.value = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function updateSidebarAvatar(imgUrl) {
+  const img = document.getElementById('sidebarAvatarImg');
+  const text = document.getElementById('sidebarAvatarText');
+  if (img && imgUrl) { img.src = imgUrl; img.style.display = 'block'; if (text) text.style.display = 'none'; }
+  else if (img) { img.src = ''; img.style.display = 'none'; if (text) text.style.display = ''; }
+}
+
+function updateTopbarAvatar(imgUrl) {
+  const img = document.getElementById('topbarAvatarImg');
+  const text = document.getElementById('topbarAvatarText');
+  if (img && imgUrl) { img.src = imgUrl; img.style.display = 'block'; if (text) text.style.display = 'none'; }
+  else if (img) { img.src = ''; img.style.display = 'none'; if (text) text.style.display = ''; }
 }
 
 function saveProfile(){
   const data = {
+    fullName: (document.getElementById('pName')||{}).value || '',
+    avatarUrl: (document.getElementById('pAvatar')||{}).value || '',
     specialization: (document.getElementById('pSpec')||{}).value || '',
     location: (document.getElementById('pLoc')||{}).value || '',
     experienceYears: Number((document.getElementById('pExp')||{}).value || 0),

@@ -249,6 +249,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       clearCards();
       cards.forEach((card) => cardsGrid.appendChild(buildCardEl(card)));
+      requestAnimationFrame(() => {
+        cardsGrid.querySelectorAll(".pg-card.reveal").forEach((el) => el.classList.add("visible"));
+      });
       updateHeroCount(cards.length);
       updateResultCount(cards.length);
       showEmptyState(cards.length === 0);
