@@ -26,6 +26,7 @@ import io.virinchi.springweb.repository.ReviewRepository;
 import io.virinchi.springweb.repository.UserRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -66,8 +67,9 @@ public class PhotographerService {
         return profileRepository.findAll().stream()
                 .filter(profile -> profile.getUser() != null
                         && profile.getUser().getStatus().name().equals("ACTIVE"))
-                .filter(profile -> spec == null || profile.getSpecialization().toLowerCase(Locale.ROOT).contains(spec))
-                .filter(profile -> loc == null || profile.getLocation().toLowerCase(Locale.ROOT).contains(loc))
+                .filter(PhotographerProfile::isVerified)
+                .filter(profile -> spec == null || matchesAnyToken(profile.getSpecialization(), spec))
+                .filter(profile -> loc == null || matchesAnyToken(profile.getLocation(), loc))
                 .filter(profile -> maxPrice == null || startingPrice(profile).compareTo(maxPrice) <= 0)
                 .sorted(Comparator.comparingDouble(this::rating).reversed().thenComparing(profile -> profile.getUser().getFullName()))
                 .map(this::toPublicResponse)
@@ -285,6 +287,22 @@ public class PhotographerService {
         return userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                         org.springframework.http.HttpStatus.UNAUTHORIZED, "User session is invalid"));
+    }
+
+    /**
+     * Case-insensitive ANY-of matcher for comma-separated filter tokens
+     * (the frontend sends one token per selected checkbox). Null-safe: a
+     * profile with a null value simply never matches.
+     */
+    private boolean matchesAnyToken(String value, String tokens) {
+        if (value == null || tokens == null) {
+            return false;
+        }
+        String normalized = value.toLowerCase(Locale.ROOT);
+        return Arrays.stream(tokens.split(","))
+                .map(String::trim)
+                .filter(token -> !token.isEmpty())
+                .anyMatch(normalized::contains);
     }
 
     private String lowercase(String value) {

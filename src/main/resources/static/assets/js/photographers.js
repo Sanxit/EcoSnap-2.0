@@ -104,38 +104,68 @@ document.addEventListener("DOMContentLoaded", () => {
   if (priceSlider) {
     priceSlider.addEventListener("input", () => {
       updateSliderTrack();
-      filterPhotographers();
+      scheduleReload(300); // debounce server reloads while dragging
     });
     updateSliderTrack();
   }
 
 // ============================================
-// 4. REAL-TIME FILTERING ENGINE
+// 4. LIVE DATA ENGINE (server-backed)
 // ============================================
   const cardsGrid = document.getElementById("pgCardsGrid");
   const resultCount = document.getElementById("resultCount");
   const emptyState = document.getElementById("pgEmptyState");
-  const allCards = Array.from(document.querySelectorAll(".pg-card[data-profile-id]"));
-  let backendCards = []; // cards rendered from the backend
+
+  const PLACEHOLDER_IMG =
+    'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E';
+
+  const selectedSpecialties = () =>
+    Array.from(document.querySelectorAll("#specialtiesBody input[type='checkbox']:checked"))
+      .map((cb) => cb.value.trim().toLowerCase())
+      .filter(Boolean);
+
+  const selectedLocations = () =>
+    Array.from(document.querySelectorAll("#locationBody input[type='checkbox']:checked"))
+      .map((cb) => cb.value.trim().toLowerCase())
+      .filter(Boolean);
+
+  const currentMaxPrice = () =>
+    priceSlider ? parseInt(priceSlider.value, 10) : null;
+
+  // Filter state as backend query params. Names must match
+  // GET /api/photographers → specialization, location, maxPrice.
+  // Multiple selections are sent as comma-separated tokens (ANY-of match).
+  function currentQueryParams() {
+    return {
+      specialization: selectedSpecialties().join(",") || null,
+      location: selectedLocations().join(",") || null,
+      maxPrice: currentMaxPrice(),
+    };
+  }
 
   // Normalize a backend photographer record into a card-like object with the
-  // same data-* attributes used by the filter/sort engine.
+  // same data-* attributes used by the sort engine. Null-safe on every field.
   function toCardData(p) {
-    const specs = (p.specialization || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-    const loc = (p.location || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const price = Number(p.packages && p.packages.length
-      ? p.packages[0].price
-      : (p.hourlyRate || 0));
+    if (!p || typeof p !== "object") return null;
+    const specs = String(p.specialization || "")
+      .split(",")
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean);
+    const loc = String(p.location || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const packagePrices = (Array.isArray(p.packages) ? p.packages : [])
+      .map((pkg) => Number(pkg && pkg.price))
+      .filter((n) => !isNaN(n) && n > 0);
+    const price = packagePrices.length ? Math.min(...packagePrices) : Number(p.hourlyRate) || 0;
     return {
       id: p.id,
-      name: p.ownerName || 'Photographer',
+      name: p.ownerName || "Photographer",
       specs: specs,
       loc: loc,
       price: price,
       rating: String(p.rating || 0),
-      cover: p.coverImageUrl || p.avatarUrl || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E',
-      avatar: p.avatarUrl || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E',
-      tags: specs.length ? specs : ['Photography'],
+      cover: p.coverImageUrl || p.avatarUrl || PLACEHOLDER_IMG,
+      avatar: p.avatarUrl || PLACEHOLDER_IMG,
+      tags: specs.length ? specs : ["Photography"],
       verified: p.verified === true
     };
   }
@@ -184,102 +214,75 @@ document.addEventListener("DOMContentLoaded", () => {
     return el;
   }
 
-  function getActiveCards() {
-    return Array.from(cardsGrid ? cardsGrid.querySelectorAll(".pg-card[data-profile-id]") : []);
+  function clearCards() {
+    if (!cardsGrid) return;
+    cardsGrid.querySelectorAll(".pg-card").forEach((el) => el.remove());
   }
 
-  // Load photographers from the backend and replace static cards.
-  async function loadPhotographersFromBackend() {
-    if (!window.EcoSnapAPI) return;
-    try {
-      const list = await EcoSnapAPI.photographers();
-      if (!Array.isArray(list) || list.length === 0) return;
-      backendCards = list.map(toCardData);
-
-      // Replace static cards with backend-rendered cards.
-      getActiveCards().forEach(c => c.remove());
-      backendCards.forEach(card => {
-        const el = buildCardEl(card);
-        cardsGrid.appendChild(el);
-      });
-
-      // Update the hero count.
-      const heroCount = document.querySelector('.pg-title span');
-      if (heroCount) heroCount.textContent = String(backendCards.length);
-
-      filterPhotographers();
-    } catch (e) {
-      console.warn('Backend photographers fetch failed, using existing cards.', e);
-    }
+  function updateHeroCount(count) {
+    const heroCount = document.querySelector(".pg-title span");
+    if (heroCount) heroCount.textContent = String(count);
   }
 
-  function filterPhotographers() {
-    const selectedSpecs = Array.from(
-      document.querySelectorAll("#specialtiesBody input[type='checkbox']:checked")
-    ).map((cb) => cb.value.toLowerCase());
-
-    const selectedLocs = Array.from(
-      document.querySelectorAll("#locationBody input[type='checkbox']:checked")
-    ).map((cb) => cb.value.toLowerCase());
-
-    const maxPrice = priceSlider ? parseInt(priceSlider.value) : 60000;
-
-    let visibleCount = 0;
-    const cards = getActiveCards();
-
-    cards.forEach((card) => {
-      const cardSpecs = (card.getAttribute("data-specialties") || "")
-        .toLowerCase()
-        .split(",")
-        .map((s) => s.trim());
-      const cardLoc = (card.getAttribute("data-location") || "").toLowerCase().trim();
-      const cardPrice = parseInt(card.getAttribute("data-price") || 0);
-
-      const matchesSpec =
-        selectedSpecs.length === 0 ||
-        selectedSpecs.some((s) => cardSpecs.includes(s));
-
-      const matchesLoc =
-        selectedLocs.length === 0 ||
-        selectedLocs.some((loc) => {
-          if (loc === "other") {
-            return cardLoc === "other" || cardLoc === "dharan" || cardLoc === "butwal";
-          }
-          return cardLoc.includes(loc);
-        });
-
-      const matchesPrice = cardPrice <= maxPrice;
-      const isMatch = matchesSpec && matchesLoc && matchesPrice;
-
-      if (isMatch) {
-        card.classList.remove("filtered-out");
-        card.style.display = "";
-        visibleCount++;
-      } else {
-        card.classList.add("filtered-out");
-        card.style.display = "none";
-      }
-    });
-
+  function updateResultCount(count) {
     if (resultCount) {
-      resultCount.innerHTML = `Showing <strong>${visibleCount}</strong> of ${cards.length} photographers`;
+      resultCount.innerHTML = `Showing <strong>${count}</strong> photographer${count === 1 ? "" : "s"}`;
     }
-
-    if (emptyState) {
-      emptyState.classList.toggle("visible", visibleCount === 0);
-    }
-
-    updateActiveBadge();
   }
 
+  function showEmptyState(visible) {
+    if (emptyState) emptyState.classList.toggle("visible", visible);
+  }
+
+  // Load photographers from the live API using the active filters and
+  // re-render the grid. Old cards are always cleared first — including when
+  // the result set is empty or the request fails (no mock fallback).
+  async function loadPhotographers() {
+    if (!window.EcoSnapAPI || !cardsGrid) return;
+    const params = currentQueryParams();
+    try {
+      const list = EcoSnapAPI.unwrapList(await EcoSnapAPI.photographers(params));
+      const cards = (Array.isArray(list) ? list : [])
+        .map(toCardData)
+        .filter(Boolean)
+        .filter((card) => card.verified);
+
+      clearCards();
+      cards.forEach((card) => cardsGrid.appendChild(buildCardEl(card)));
+      updateHeroCount(cards.length);
+      updateResultCount(cards.length);
+      showEmptyState(cards.length === 0);
+      updateActiveBadge();
+    } catch (e) {
+      // Log the failing endpoint + payload for diagnostics.
+      console.error(
+        "[EcoSnap] GET /api/photographers failed",
+        { params: params, reason: e && e.message },
+        e
+      );
+      clearCards();
+      updateHeroCount(0);
+      updateResultCount(0);
+      showEmptyState(true);
+      updateActiveBadge();
+    }
+  }
+
+  let reloadTimer = null;
+  function scheduleReload(delayMs) {
+    clearTimeout(reloadTimer);
+    reloadTimer = setTimeout(loadPhotographers, delayMs || 0);
+  }
+
+  // Any filter change reloads from the live API with matching query params.
   document.querySelectorAll(".filter-option input[type='checkbox']").forEach((cb) => {
-    cb.addEventListener("change", filterPhotographers);
+    cb.addEventListener("change", () => loadPhotographers());
   });
 
   const btnApply = document.getElementById("btnApplyFilter");
   if (btnApply) {
     btnApply.addEventListener("click", () => {
-      filterPhotographers();
+      loadPhotographers();
       if (window.innerWidth < 1024 && cardsGrid) {
         cardsGrid.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -299,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSliderTrack();
     }
 
-    filterPhotographers();
+    loadPhotographers();
   }
 
   const btnClear = document.getElementById("btnClearFilters");
@@ -332,7 +335,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     cards.forEach((card) => cardsGrid.appendChild(card));
-    if (emptyState) cardsGrid.appendChild(emptyState);
   }
 
   if (sortSelect) { sortSelect.addEventListener("change", sortPhotographers); }
@@ -363,14 +365,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Profile card navigation (works for both static and backend cards)
-  document.querySelectorAll('.pg-card[data-profile-id]').forEach(card => {
-    card.addEventListener('click', () => {
-      const id = card.getAttribute('data-profile-id');
-      window.location.href = `photographer-profile.html?id=${id}`;
-    });
-  });
-
-  // Load backend photographers (async), then filter.
-  loadPhotographersFromBackend().finally(() => filterPhotographers());
+  // Initial load from the live API (URL params pre-applied above).
+  loadPhotographers();
 });
