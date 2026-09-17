@@ -299,6 +299,7 @@ function resetUserForm() {
   document.getElementById('uId').value='';
   document.getElementById('uName').value='';
   document.getElementById('uEmail').value='';
+  document.getElementById('uPassword').value='';
   document.getElementById('uRole').value='CUSTOMER';
   document.getElementById('uStatus').value='ACTIVE';
   document.getElementById('modalUserTitle').textContent='Add User';
@@ -322,6 +323,7 @@ function editUser(id) {
   document.getElementById('uId').value = id;
   document.getElementById('uName').value = u.name;
   document.getElementById('uEmail').value = u.email;
+  document.getElementById('uPassword').value = '';
   document.getElementById('uRole').value = u.role;
   document.getElementById('uStatus').value = u.status;
   document.getElementById('modalUserTitle').textContent = 'Edit User';
@@ -332,9 +334,11 @@ function saveUser() {
   const id = document.getElementById('uId').value;
   const name = document.getElementById('uName').value.trim();
   const email = document.getElementById('uEmail').value.trim();
+  const password = document.getElementById('uPassword').value;
   const role = document.getElementById('uRole').value;
   const status = document.getElementById('uStatus').value;
   if (!name || !email) { showToast('Name and email are required.','error'); return; }
+  if (!id && (!password || password.length < 6)) { showToast('Password must be at least 6 characters.','error'); return; }
   const btn = document.querySelector('#modalUser .btn-primary');
   const original = btn ? btn.innerHTML : '';
   if (btn) { btn.disabled = true; btn.innerHTML = '<i class="ri-loader-4-line spin"></i> Saving...'; }
@@ -352,8 +356,8 @@ function saveUser() {
     EcoSnapAPI.adminCreateUser({
       fullName: name,
       email: email,
-      password: 'Password@123',
-      role: role === 'CUSTOMER' ? 'CLIENT' : role,
+      password: password,
+      role: role,
       status: status || 'ACTIVE'
     }).then(res => {
       backendUsers.unshift({

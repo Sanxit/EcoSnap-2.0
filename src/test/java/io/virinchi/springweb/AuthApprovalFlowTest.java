@@ -139,7 +139,7 @@ class AuthApprovalFlowTest {
     }
 
     @Test
-    void publicRegistrationCreatesActiveUserAndSendsRegistrationPendingEmail() throws Exception {
+    void publicRegistrationCreatesPendingUserAndSendsRegistrationPendingEmail() throws Exception {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -155,18 +155,18 @@ class AuthApprovalFlowTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.user.id").exists())
                 .andExpect(jsonPath("$.user.email").value("customer@test.com"))
-                .andExpect(jsonPath("$.user.status").value("ACTIVE"))
+                .andExpect(jsonPath("$.user.status").value("PENDING"))
                 .andExpect(jsonPath("$.user.role").value("CUSTOMER"));
 
         Optional<User> savedUser = userRepository.findByEmail("customer@test.com");
         assertThat(savedUser).isPresent();
-        assertThat(savedUser.get().getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(savedUser.get().getStatus()).isEqualTo(UserStatus.PENDING);
 
         verify(emailService, times(1)).sendRegistrationPending(any(User.class));
     }
 
     @Test
-    void publicRegistrationForPhotographerCreatesActiveUserAndProfileAndSendsEmail() throws Exception {
+    void publicRegistrationForPhotographerCreatesPendingUserAndProfileAndSendsEmail() throws Exception {
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -190,24 +190,24 @@ class AuthApprovalFlowTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.user.id").exists())
                 .andExpect(jsonPath("$.user.email").value("photographer@test.com"))
-                .andExpect(jsonPath("$.user.status").value("ACTIVE"))
+                .andExpect(jsonPath("$.user.status").value("PENDING"))
                 .andExpect(jsonPath("$.user.role").value("PHOTOGRAPHER"))
                 .andExpect(jsonPath("$.user.profile.specialization").value("Wedding"))
                 .andExpect(jsonPath("$.user.profile.location").value("New York"))
-                .andExpect(jsonPath("$.user.profile.verified").value(true));
+                .andExpect(jsonPath("$.user.profile.verified").value(false));
 
         Optional<User> savedUser = userRepository.findByEmail("photographer@test.com");
         assertThat(savedUser).isPresent();
-        assertThat(savedUser.get().getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(savedUser.get().getStatus()).isEqualTo(UserStatus.PENDING);
         assertThat(savedUser.get().getPhotographerProfile()).isNotNull();
-        assertThat(savedUser.get().getPhotographerProfile().isVerified()).isTrue();
+        assertThat(savedUser.get().getPhotographerProfile().isVerified()).isFalse();
 
         verify(emailService, times(1)).sendRegistrationPending(any(User.class));
     }
 
     @Test
     void activeLoginSucceedsAndReturnsAuthResponse() throws Exception {
-        // Register user (ACTIVE automatically)
+        // Register user (PENDING by default)
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -222,7 +222,12 @@ class AuthApprovalFlowTest {
                                 """))
                 .andExpect(status().isCreated());
 
-        // Login succeeds immediately (user already ACTIVE from registration)
+        // Activate user (simulating admin approval)
+        User user = userRepository.findByEmail("customer@test.com").orElseThrow();
+        user.setStatus(UserStatus.ACTIVE);
+        userRepository.save(user);
+
+        // Login succeeds (user now ACTIVE)
         MvcResult result = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -245,14 +250,14 @@ class AuthApprovalFlowTest {
         assertThat(responseBody).contains("\"email\":");
         assertThat(responseBody).contains("\"status\":\"ACTIVE\"");
 
-        // Verify no approval email sent (user was ACTIVE from registration)
+        // Verify no approval email sent (user was PENDING then manually activated)
         verify(emailService, never()).sendApproval(any(User.class));
     }
 
     @Test
     @WithMockUser(username = "admin@test.com", roles = {"ADMIN"})
     void adminCanTransitionUserStatusSendsApprovalEmail() throws Exception {
-        // Register user (ACTIVE by default)
+        // Register user (PENDING by default)
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -269,25 +274,26 @@ class AuthApprovalFlowTest {
 
         User user = userRepository.findByEmail("customer@test.com").orElseThrow();
         Long userId = user.getId();
-        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        assertThat(user.getStatus()).isEqualTo(UserStatus.PENDING);
 
-        // Admin deactivates user (ACTIVE → SUSPENDED)
+        // Admin approves user (PENDING → ACTIVE) — sends approval email
         mockMvc.perform(patch("/api/admin/users/{id}/status", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
                         .with(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user("admin@test.com").roles("ADMIN"))
                         .content("""
                                 {
-                                    "status": "SUSPENDED"
+                                    "status": "ACTIVE"
                                 }
                                 """))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId))
-                .andExpect(jsonPath("$.status").value("SUSPENDED"));
+                .andExpect(jsonPath("$.status").value("ACTIVE"));
 
-        // Verify user is SUSPENDED in database
+        // Verify user is ACTIVE in database and approval email was sent
         User updatedUser = userRepository.findById(userId).orElseThrow();
-        assertThat(updatedUser.getStatus()).isEqualTo(UserStatus.SUSPENDED);
+        assertThat(updatedUser.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        verify(emailService, times(1)).sendApproval(any(User.class));
     }
 
     @Test
@@ -298,8 +304,8 @@ class AuthApprovalFlowTest {
     }
 
     @Test
-    void authMeReturnsNullUserForPendingUser() throws Exception {
-        // Register user (ACTIVE by default)
+    void pendingUserLoginRejected() throws Exception {
+        // Register user (PENDING by default)
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -314,7 +320,7 @@ class AuthApprovalFlowTest {
                                 """))
                 .andExpect(status().isCreated());
 
-        // Login should succeed
+        // Login should be rejected (user is PENDING — awaiting admin approval)
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())
@@ -324,10 +330,8 @@ class AuthApprovalFlowTest {
                                     "password": "Password123!"
                                 }
                                 """))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user").exists())
-                .andExpect(jsonPath("$.user.email").value("customer@test.com"))
-                .andExpect(jsonPath("$.user.status").value("ACTIVE"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("Account is pending administrator approval"));
     }
 
     @Test
@@ -386,7 +390,7 @@ class AuthApprovalFlowTest {
 
     @Test
     void authMeReturnsNullForActiveUserWithoutSession() throws Exception {
-        // Register user (ACTIVE automatically)
+        // Register user (PENDING by default)
         mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrfCookie())

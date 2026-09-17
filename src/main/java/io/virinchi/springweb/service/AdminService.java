@@ -35,6 +35,7 @@ import io.virinchi.springweb.dto.ApiDtos.AdminNoticeRequest;
 import io.virinchi.springweb.dto.ApiDtos.PhotographerProfileRequest;
 import io.virinchi.springweb.exception.ConflictException;
 import io.virinchi.springweb.repository.NotificationRepository;
+import io.virinchi.springweb.repository.PasswordResetTokenRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
@@ -50,6 +51,7 @@ public class AdminService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final NotificationRepository notificationRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public AdminService(UserRepository userRepository,
                         PhotographerProfileRepository profileRepository,
@@ -61,7 +63,8 @@ public class AdminService {
                         ContactService contactService,
                         EmailService emailService,
                         PasswordEncoder passwordEncoder,
-                        NotificationRepository notificationRepository) {
+                         NotificationRepository notificationRepository,
+                         PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.bookingRepository = bookingRepository;
@@ -73,6 +76,7 @@ public class AdminService {
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
         this.notificationRepository = notificationRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     public AdminStatsResponse stats() {
@@ -188,6 +192,12 @@ public class AdminService {
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("User not found"));
+        notificationRepository.deleteAll(notificationRepository.findByUserIdOrderByCreatedAtDesc(id));
+        passwordResetTokenRepository.deleteByUserId(id);
+        bookingRepository.deleteAll(bookingRepository.findByCustomerIdOrderByIdDesc(id));
+        if (user.getPhotographerProfile() != null) {
+            profileRepository.delete(user.getPhotographerProfile());
+        }
         userRepository.delete(user);
     }
 

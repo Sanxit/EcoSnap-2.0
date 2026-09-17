@@ -77,7 +77,7 @@ public class AuthService {
         user.setEmail(email);
         user.setPhoneNumber(blankToNull(request.phoneNumber()));
         user.setRole(request.role());
-        user.setStatus(UserStatus.ACTIVE);
+        user.setStatus(UserStatus.PENDING);
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         userRepository.save(user);
 
@@ -97,7 +97,6 @@ public class AuthService {
             profile.setAvatarUrl(blankToNull(p.avatarUrl()));
             profile.setCoverImageUrl(blankToNull(p.coverImageUrl()));
             profile.setResponseHours(p.responseHours() == null ? 24 : p.responseHours());
-            profile.setVerified(true);
             profileRepository.save(profile);
         }
         user.setPhotographerProfile(profile);
